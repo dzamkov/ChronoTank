@@ -174,7 +174,6 @@ void GameDef::Render() {
 
 //--
 void GameDef::Destroy() {
-	this->_frame->Destroy();
 	this->_world->Destroy();
 }
 
