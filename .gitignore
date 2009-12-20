@@ -1,3 +1,4 @@
 *.vcproj.*
 */Debug
 */Release
+*.ncb

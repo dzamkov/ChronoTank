@@ -20,7 +20,7 @@ int main() {
 	IGame* game = CreateGame();
 
 	// Create the render device
-	core::dimension2d<s32> dim(1024, 768);
+	core::dimension2d<u32> dim(1024, 768);
 	IrrlichtDevice* device =
 		createDevice(video::EDT_DIRECT3D9, dim,
 		16, false, false, false, game);

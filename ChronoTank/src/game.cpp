@@ -117,9 +117,9 @@ void GameDef::Init(irr::IrrlichtDevice* Device) {
 	this->_smgr = this->_device->getSceneManager();
 	this->_fsys = this->_device->getFileSystem();
 
-	this->_maindir = this->_fsys->getWorkingDirectory(); this->_maindir = this->_maindir + "/..";
+	this->_maindir = std::string(this->_fsys->getWorkingDirectory().c_str()) + "/..";
 	this->_fsys->changeWorkingDirectoryTo(this->_maindir.c_str());
-	this->_maindir = this->_fsys->getWorkingDirectory();
+	this->_maindir = this->_fsys->getWorkingDirectory().c_str();
 	this->_fsys->changeWorkingDirectoryTo((this->_maindir + "/Media").c_str());
 
 	this->_camera = this->_smgr->addCameraSceneNode();
