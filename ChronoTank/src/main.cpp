@@ -6,8 +6,8 @@
 
 #include "game.h"
 
-using namespace irr;
 using namespace ctank;
+using namespace irr;
 
 #ifdef _MSC_VER
 #pragma comment(lib, "Irrlicht.lib")

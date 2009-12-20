@@ -1,9 +1,9 @@
-#ifndef CTANK_ENGINE_ENTITYDEF_H
-#define CTANK_ENGINE_ENTITYDEF_H
+#ifndef NULLITY_ENGINE_ENTITYDEF_H
+#define NULLITY_ENGINE_ENTITYDEF_H
 
 #include "../object.h"
 
-namespace ctank {
+namespace nullity {
 
 	/// An implemented interface to an entity that uses World.
 	class Entity : public IEntity {

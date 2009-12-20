@@ -6,7 +6,7 @@
 #include "visual.h"
 #include "object.h"
 
-using namespace ctank;
+using namespace nullity;
 using namespace irr;
 
 /****************************************/
@@ -73,7 +73,7 @@ public:
 };
 
 //--
-IVisual* ctank::LoadVisualFromFile(VisualParameters Params, io::IReadFile* File, IObject* Object) {
+IVisual* nullity::LoadVisualFromFile(VisualParameters Params, io::IReadFile* File, IObject* Object) {
 	return new LoadedVisual(Params, File, Object);
 }
 

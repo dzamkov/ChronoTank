@@ -7,12 +7,12 @@
 
 #include "engine/worlddef.h"
 
-using namespace ctank;
+using namespace nullity;
 
 /****************************************/
 /*	World from engine					*/
 /****************************************/
 //--
-IWorld* ctank::CreateWorld() {
+IWorld* nullity::CreateWorld() {
 	return new World();
 }

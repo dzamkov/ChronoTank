@@ -1,11 +1,11 @@
-#ifndef CTANK_EVENTLOG_H
-#define CTANK_EVENTLOG_H
+#ifndef NULLITY_EVENTLOG_H
+#define NULLITY_EVENTLOG_H
 
 #include <vector>
 
 #include "object.h"
 
-namespace ctank {
+namespace nullity {
 
 	/// Event log that can be used by worlds to store
 	/// the time certain events can happen. This is

@@ -4,7 +4,7 @@
 #include "framedef.h"
 #include "worlddef.h"
 
-using namespace ctank;
+using namespace nullity;
 
 /************************************************/
 /*	Frame functions definitions     			*/

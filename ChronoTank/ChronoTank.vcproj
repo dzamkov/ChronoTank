@@ -157,32 +157,76 @@
 	</References>
 	<Files>
 		<Filter
-			Name="engine"
+			Name="nullity"
 			>
 			<File
-				RelativePath=".\src\engine\entitydef.cpp"
+				RelativePath=".\src\nullity\eventlog.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\engine\entitydef.h"
+				RelativePath=".\src\nullity\eventlog.h"
 				>
 			</File>
 			<File
-				RelativePath=".\src\engine\framedef.cpp"
+				RelativePath=".\src\nullity\object.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\engine\framedef.h"
+				RelativePath=".\src\nullity\object.h"
 				>
 			</File>
 			<File
-				RelativePath=".\src\engine\worlddef.cpp"
+				RelativePath=".\src\nullity\timemanipulator.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\engine\worlddef.h"
+				RelativePath=".\src\nullity\timemanipulator.h"
 				>
 			</File>
+			<File
+				RelativePath=".\src\nullity\visual.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\nullity\visual.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\nullity\world.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\nullity\world.h"
+				>
+			</File>
+			<Filter
+				Name="engine"
+				>
+				<File
+					RelativePath=".\src\nullity\engine\entitydef.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\nullity\engine\entitydef.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\nullity\engine\framedef.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\nullity\engine\framedef.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\nullity\engine\worlddef.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\nullity\engine\worlddef.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<File
 			RelativePath=".\src\clockobj.cpp"
@@ -190,14 +234,6 @@
 		</File>
 		<File
 			RelativePath=".\src\clockobj.h"
-			>
-		</File>
-		<File
-			RelativePath=".\src\eventlog.cpp"
-			>
-		</File>
-		<File
-			RelativePath=".\src\eventlog.h"
 			>
 		</File>
 		<File
@@ -213,43 +249,11 @@
 			>
 		</File>
 		<File
-			RelativePath=".\src\object.cpp"
-			>
-		</File>
-		<File
-			RelativePath=".\src\object.h"
-			>
-		</File>
-		<File
-			RelativePath=".\src\timemanipulator.cpp"
-			>
-		</File>
-		<File
-			RelativePath=".\src\timemanipulator.h"
-			>
-		</File>
-		<File
 			RelativePath=".\src\vehicle.cpp"
 			>
 		</File>
 		<File
 			RelativePath=".\src\vehicle.h"
-			>
-		</File>
-		<File
-			RelativePath=".\src\visual.cpp"
-			>
-		</File>
-		<File
-			RelativePath=".\src\visual.h"
-			>
-		</File>
-		<File
-			RelativePath=".\src\world.cpp"
-			>
-		</File>
-		<File
-			RelativePath=".\src\world.h"
 			>
 		</File>
 	</Files>

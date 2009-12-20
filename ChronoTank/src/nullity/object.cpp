@@ -4,7 +4,7 @@
 #include "object.h"
 #include "world.h"
 
-using namespace ctank;
+using namespace nullity;
 
 /****************************************/
 /*	Object								*/
@@ -81,7 +81,7 @@ void IObject::OnSkipMessage(IMessageNotice* Notice) {
 }
 
 //--
-IObject* ctank::Clone(IObject* Object) {
+IObject* nullity::Clone(IObject* Object) {
 	IObject* clone = Object->Clone();
 	if(clone != NULL) {
 		clone->_entity = Object->_entity;
@@ -90,11 +90,11 @@ IObject* ctank::Clone(IObject* Object) {
 }
 
 //--
-void ctank::SetObjectEntity(IObject* Object, IEntity* Entity) {
+void nullity::SetObjectEntity(IObject* Object, IEntity* Entity) {
 	Object->_entity = Entity;
 }
 
 //--
-void ctank::SetObjectFrame(IObject* Object, IFrame* Frame) {
+void nullity::SetObjectFrame(IObject* Object, IFrame* Frame) {
 	Object->_frame = Frame;
 }

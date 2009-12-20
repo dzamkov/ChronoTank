@@ -5,13 +5,15 @@
 #include <math.h>
 #include <string>
 
+#include "nullity/visual.h"
+#include "nullity/world.h"
+#include "nullity/timemanipulator.h"
+
 #include "game.h"
-#include "visual.h"
-#include "world.h"
 #include "vehicle.h"
 #include "clockobj.h"
-#include "timemanipulator.h"
 
+using namespace nullity;
 using namespace ctank;
 using namespace irr;
 

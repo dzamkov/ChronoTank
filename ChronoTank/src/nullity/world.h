@@ -1,10 +1,10 @@
-#ifndef CTANK_WORLD_H
-#define CTANK_WORLD_H
+#ifndef NULLITY_WORLD_H
+#define NULLITY_WORLD_H
 
 #include "object.h"
 #include "visual.h"
 
-namespace ctank {
+namespace nullity {
 	class IWorld;
 	class IFrame;
 

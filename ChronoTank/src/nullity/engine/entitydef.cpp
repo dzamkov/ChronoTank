@@ -3,7 +3,7 @@
 /************************************************/
 #include "entitydef.h"
 
-using namespace ctank;
+using namespace nullity;
 
 /************************************************/
 /*	Entity functions definitions     			*/

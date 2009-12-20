@@ -1,5 +1,5 @@
-#ifndef CTANK_ENGINE_FRAMEDEF_H
-#define CTANK_ENGINE_FRAMEDEF_H
+#ifndef NULLITY_ENGINE_FRAMEDEF_H
+#define NULLITY_ENGINE_FRAMEDEF_H
 
 #include <vector>
 #include <map>
@@ -10,7 +10,7 @@
 #include "../object.h"
 #include "../world.h"
 
-namespace ctank {
+namespace nullity {
 	class World;
 	class Frame;
 	struct MessageEx;

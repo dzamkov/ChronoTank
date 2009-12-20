@@ -4,6 +4,7 @@
 #include <irrlicht.h>
 #include "vehicle.h"
 
+using namespace nullity;
 using namespace ctank;
 using namespace irr;
 

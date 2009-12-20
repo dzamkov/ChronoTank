@@ -1,10 +1,10 @@
-#ifndef CTANK_VISUAL_H
-#define CTANK_VISUAL_H
+#ifndef NULLITY_VISUAL_H
+#define NULLITY_VISUAL_H
 
 #include <irrlicht.h>
 #include <string>
 
-namespace ctank {
+namespace nullity {
 	class IObject;
 	typedef float	TimeStep;
 

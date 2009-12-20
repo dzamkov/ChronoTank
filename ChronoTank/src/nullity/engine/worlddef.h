@@ -1,5 +1,5 @@
-#ifndef CTANK_ENGINE_WORLDDEF_H
-#define CTANK_ENGINE_WORLDDEF_H
+#ifndef NULLITY_ENGINE_WORLDDEF_H
+#define NULLITY_ENGINE_WORLDDEF_H
 
 #include <vector>
 #include <map>
@@ -10,7 +10,7 @@
 #include "../eventlog.h"
 #include "../world.h"
 
-namespace ctank {
+namespace nullity {
 	struct MessageEvent;
 	struct MessageEx;
 	class World;

@@ -5,7 +5,7 @@
 
 #include "eventlog.h"
 
-using namespace ctank;
+using namespace nullity;
 
 /****************************************/
 /*	Event log implementation			*/
@@ -155,7 +155,7 @@ std::vector<IObject*> EventLog::GetObjectStatesAtTime(TimeStep Time) {
 void EventLog::AddObjectStateEvent(TimeStep Time, IObject* Object, bool Clone, bool AutoDelete) {
 	ObjectStateEvent* ose = new ObjectStateEvent();
 	ose->Entity = Object->GetEntity();
-	ose->State = Clone ? (ctank::Clone(Object)) : Object;
+	ose->State = Clone ? (nullity::Clone(Object)) : Object;
 	ose->Time = Time;
 	ose->Flags = AutoDelete ? ObjectStateEvent::Flag | ObjectStateEvent::AutoDeleteFlag : ObjectStateEvent::Flag;
 	this->AddEvent(ose);

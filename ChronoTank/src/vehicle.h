@@ -2,7 +2,8 @@
 #define CTANK_VEHICLE_H
 
 #include <irrlicht.h>
-#include "object.h"
+
+#include "nullity/object.h"
 
 namespace ctank {
 
@@ -13,7 +14,7 @@ namespace ctank {
 	};
 
 	/// Interface to a vehicle that moves n stuff.
-	class IVehicle : public IObject {
+	class IVehicle : public nullity::IObject {
 	public:
 
 		/// Sets a control value for the vehicle.

@@ -6,6 +6,7 @@
 #include <iomanip>
 #include "clockobj.h"
 
+using namespace nullity;
 using namespace ctank;
 using namespace irr;
 
@@ -104,7 +105,7 @@ IVisual* ClockObjectDef::CreateVisual(VisualParameters Params) {
 }
 
 //--
-ClockObjectVisual::ClockObjectVisual(ctank::VisualParameters Params, ClockObjectDef* Obj)
+ClockObjectVisual::ClockObjectVisual(VisualParameters Params, ClockObjectDef* Obj)
 : Params(Params)
 {
 	this->Target = Obj;

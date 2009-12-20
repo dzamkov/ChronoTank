@@ -5,7 +5,7 @@
 
 #include "worlddef.h"
 
-using namespace ctank;
+using namespace nullity;
 
 /************************************************/
 /*	World functions definitions     			*/
@@ -73,7 +73,7 @@ MessageEx* World::CreateMessage() {
 }
 
 //--
-void World::SendMessage(ctank::MessageEx* Message) {
+void World::SendMessage(nullity::MessageEx* Message) {
 	// Add usage for that message
 	this->_messageusages[Message->Message].push_back(Message);
 

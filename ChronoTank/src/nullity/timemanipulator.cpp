@@ -3,7 +3,7 @@
 /************************************************/
 #include "timemanipulator.h"
 
-using namespace ctank;
+using namespace nullity;
 
 /****************************************/
 /*	Time manipulator					*/
@@ -75,7 +75,7 @@ public:
 };
 
 //--
-IDistortTimeManipulator* ctank::CreateLinearDistortTimeManipulator() {
+IDistortTimeManipulator* nullity::CreateLinearDistortTimeManipulator() {
 	return new LinearDistortTimeManipulator();
 }
 
@@ -104,7 +104,7 @@ public:
 };
 
 //--
-IDistortTimeManipulator* ctank::CreateSharpDistortTimeManipulator() {
+IDistortTimeManipulator* nullity::CreateSharpDistortTimeManipulator() {
 	return new SharpDistortTimeManipulator();
 }
 

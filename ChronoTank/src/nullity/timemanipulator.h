@@ -1,10 +1,10 @@
-#ifndef CTANK_TIMEMANIPULATOR_H
-#define CTANK_TIMEMANIPULATOR_H
+#ifndef NULLITY_TIMEMANIPULATOR_H
+#define NULLITY_TIMEMANIPULATOR_H
 
 #include "object.h"
 #include "world.h"
 
-namespace ctank {
+namespace nullity {
 	
 	/// An object that distorts the passage of time in the
 	/// area surronding it.

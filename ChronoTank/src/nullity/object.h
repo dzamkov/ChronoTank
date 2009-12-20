@@ -1,11 +1,11 @@
-#ifndef CTANK_OBJECT_H
-#define CTANK_OBJECT_H
+#ifndef NULLITY_OBJECT_H
+#define NULLITY_OBJECT_H
 
 #include <irrlicht.h>
 
 #include "visual.h"
 
-namespace ctank {
+namespace nullity {
 	class IWorld;
 	class IFrame;
 	class IObject;
