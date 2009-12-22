@@ -203,6 +203,14 @@
 				Name="engine"
 				>
 				<File
+					RelativePath=".\src\nullity\engine\enginereality.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\nullity\engine\enginereality.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\nullity\engine\entitydef.cpp"
 					>
 				</File>

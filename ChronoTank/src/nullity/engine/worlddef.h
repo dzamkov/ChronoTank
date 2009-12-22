@@ -4,6 +4,7 @@
 #include <vector>
 #include <map>
 
+#include "enginereality.h"
 #include "entitydef.h"
 #include "framedef.h"
 
@@ -47,6 +48,7 @@ namespace nullity {
 		void		Destroy();
 
 		IFrame*		CreateOriginFrame();
+		IReality*	GetRootReality();
 
 		/// Creates a new frame for the world.
 		Frame*		CreateFrame();
@@ -78,7 +80,7 @@ namespace nullity {
 		std::map<Entity*, std::vector<MessageEx*>>		GetReceivedMessages(TimeStep Start, TimeStep End);
 
 	private:
-
+		Reality*					_rootreality;
 		std::vector<MessageEx>		_messages;
 		std::vector<Entity>			_entities;
 		std::vector<Frame>			_frames;

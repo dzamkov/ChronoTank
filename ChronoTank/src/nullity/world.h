@@ -1,11 +1,14 @@
 #ifndef NULLITY_WORLD_H
 #define NULLITY_WORLD_H
 
+#include <vector>
+
 #include "object.h"
 #include "visual.h"
 
 namespace nullity {
 	class IWorld;
+	class IReality;
 	class IFrame;
 
 	/// Flags that show how a world or frame is seen.
@@ -25,11 +28,28 @@ namespace nullity {
 		/// the origin frame.
 		virtual void		Init(IObject* Root) = 0;
 
+		/// Gets the reality at the start of the world.
+		virtual IReality*	GetRootReality() = 0;
+
 		/// Destroys the world and all its resources.
 		virtual void		Destroy() = 0;
 
 		/// Creates a frame corresponding to the origin of the worlds time.
 		virtual IFrame*		CreateOriginFrame() = 0;
+	};
+
+	/// A possible progression of a world. For example, the events leading up
+	/// to flipping a coin are in a single reality. Then, the one reality is split
+	/// into both possible outcomes of the coin flip. The source of these realities
+	/// is the original reality created before the coin was flipped.
+	class IReality {
+	public:
+
+		/// Gets the reality this reality split off from. The source reality is actually
+		/// part of this reality, however it is not a possible outcome and is instead the
+		/// events leading up to the split.
+		virtual IReality*					GetSource() = 0;
+
 	};
 
 	/// Represents a dynamic frame of time. If an IWorld is the representation

@@ -21,6 +21,8 @@ void World::Init(IObject* Root) {
 	this->_log.AddObjectStateEvent(
 		-std::numeric_limits<TimeStep>::infinity(),
 		Root, true, true);
+	this->_rootreality = new Reality();
+	this->_rootreality->Init();
 }
 
 //--
@@ -45,6 +47,11 @@ IFrame* World::CreateOriginFrame() {
 	Frame* f = this->CreateFrame();
 	f->Init(this, 0.0f);
 	return f;
+}
+
+//--
+IReality* World::GetRootReality() {
+	return this->_rootreality;
 }
 
 //--
