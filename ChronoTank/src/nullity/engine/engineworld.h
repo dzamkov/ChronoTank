@@ -1,12 +1,12 @@
-#ifndef NULLITY_ENGINE_WORLDDEF_H
-#define NULLITY_ENGINE_WORLDDEF_H
+#ifndef NULLITY_ENGINE_WORLD_H
+#define NULLITY_ENGINE_WORLD_H
 
 #include <vector>
 #include <map>
 
 #include "enginereality.h"
-#include "entitydef.h"
-#include "framedef.h"
+#include "engineentity.h"
+#include "engineframe.h"
 
 #include "../eventlog.h"
 #include "../world.h"

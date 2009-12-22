@@ -1,10 +1,10 @@
-#ifndef NULLITY_ENGINE_FRAMEDEF_H
-#define NULLITY_ENGINE_FRAMEDEF_H
+#ifndef NULLITY_ENGINE_FRAME_H
+#define NULLITY_ENGINE_FRAME_H
 
 #include <vector>
 #include <map>
 
-#include "entitydef.h"
+#include "engineentity.h"
 
 #include "../visual.h"
 #include "../object.h"

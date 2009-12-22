@@ -203,6 +203,22 @@
 				Name="engine"
 				>
 				<File
+					RelativePath=".\src\nullity\engine\engineentity.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\nullity\engine\engineentity.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\nullity\engine\engineframe.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\nullity\engine\engineframe.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\nullity\engine\enginereality.cpp"
 					>
 				</File>
@@ -211,27 +227,11 @@
 					>
 				</File>
 				<File
-					RelativePath=".\src\nullity\engine\entitydef.cpp"
+					RelativePath=".\src\nullity\engine\engineworld.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\src\nullity\engine\entitydef.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\nullity\engine\framedef.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\nullity\engine\framedef.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\nullity\engine\worlddef.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\nullity\engine\worlddef.h"
+					RelativePath=".\src\nullity\engine\engineworld.h"
 					>
 				</File>
 			</Filter>

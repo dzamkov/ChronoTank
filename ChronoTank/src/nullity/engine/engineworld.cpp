@@ -3,7 +3,7 @@
 /************************************************/
 #include <limits>
 
-#include "worlddef.h"
+#include "engineworld.h"
 
 using namespace nullity;
 

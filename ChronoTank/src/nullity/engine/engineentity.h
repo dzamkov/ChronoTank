@@ -1,5 +1,5 @@
-#ifndef NULLITY_ENGINE_ENTITYDEF_H
-#define NULLITY_ENGINE_ENTITYDEF_H
+#ifndef NULLITY_ENGINE_ENTITY_H
+#define NULLITY_ENGINE_ENTITY_H
 
 #include "../object.h"
 

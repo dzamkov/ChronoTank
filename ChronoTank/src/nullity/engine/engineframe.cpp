@@ -1,8 +1,8 @@
 /************************************************/
 /*	Frame Implementation     					*/
 /************************************************/
-#include "framedef.h"
-#include "worlddef.h"
+#include "engineframe.h"
+#include "engineworld.h"
 
 using namespace nullity;
 

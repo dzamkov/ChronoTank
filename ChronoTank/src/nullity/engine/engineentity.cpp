@@ -1,7 +1,7 @@
 /************************************************/
 /*	Entity Implementation     					*/
 /************************************************/
-#include "entitydef.h"
+#include "engineentity.h"
 
 using namespace nullity;
 
