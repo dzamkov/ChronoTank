@@ -34,6 +34,7 @@ TimeStep Reality::GetEnd() {
 void Reality::Init() {
 	this->_source = NULL;
 	this->_end = -std::numeric_limits<TimeStep>::infinity();
+	this->_block = NULL;
 }
 
 //--
@@ -84,6 +85,37 @@ void Reality::Merge() {
 }
 
 //--
-EventLog& Reality::GetLog() {
-	return this->_log;
+void Reality::RecordState(TimeStep Time, IObject* Object) {
+	_entity_state* es = new _entity_state();
+	es->Entity = Object->GetEntity();
+	es->Recorded = Object->GetFrame();
+	es->Time = Time;
+	es->State = Clone(Object);
+	this->_add_entity_state(es);
+}
+
+//--
+void Reality::RecordRemoval(TimeStep Time, IObject* Object) {
+	_entity_state* es = new _entity_state();
+	es->Entity = Object->GetEntity();
+	es->Recorded = Object->GetFrame();
+	es->Time = Time;
+	es->State = NULL;
+	this->_add_entity_state(es);
+}
+
+//--
+void Reality::_add_entity_state(Reality::_entity_state* State) {
+	if(State->Time < this->GetStart()) {
+		this->_source->_add_entity_state(State);
+	} else {
+		if(State->Time > this->_end) {
+			assert(this->_derived.size() < 1); // New state falls off into another derived reality.
+			this->_end = State->Time;
+		}
+
+		// Actual adding goes here!
+		assert(false);
+
+	}
 }
