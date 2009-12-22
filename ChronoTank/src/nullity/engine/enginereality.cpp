@@ -82,3 +82,8 @@ void Reality::Merge() {
 		delete r;
 	}
 }
+
+//--
+EventLog& Reality::GetLog() {
+	return this->_log;
+}

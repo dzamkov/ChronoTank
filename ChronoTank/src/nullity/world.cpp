@@ -5,7 +5,7 @@
 #include <map>
 #include <limits>
 
-#include "engine/worlddef.h"
+#include "engine/engineworld.h"
 
 using namespace nullity;
 

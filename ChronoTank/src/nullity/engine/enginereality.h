@@ -1,6 +1,7 @@
 #ifndef NULLITY_ENGINE_REALITY_H
 #define NULLITY_ENGINE_REALITY_H
 
+#include "../eventlog.h"
 #include "../world.h"
 
 namespace nullity {
@@ -35,7 +36,11 @@ namespace nullity {
 		/// be done if there is only one derived reality.
 		void		Merge();
 
+		/// Gets the log of events in this reality.
+		EventLog&	GetLog();
+
 	private:
+		EventLog				_log;
 		Reality*				_source;
 		std::vector<Reality*>	_derived;
 		TimeStep				_end;
