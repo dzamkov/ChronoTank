@@ -55,23 +55,23 @@ namespace nullity {
 			_entity_state*		Next;	// Next state for this entity.
 		};
 
-		// Partion of time.
+		// Division of time.
 		struct _time_block {
-			_time_block*						Parent;		// Larger enclosing timeblock.
-			_time_block*						Next;		// Next block or null if end or split.
-			_time_block*						Child;		// Smaller enclosed timeblock that shares first state.
-			_entity_state*						First;		// First state in this timeblock.
-			std::map<IEntity*, _entity_state*>	FirstMap;	// First state for entities in this block. Can be outside
-															// the time block if the entity exists in the block but the
-															// last state update was in another block.
-			IFrame*								Recorded;	// Frame that recorded this block, or null with multiple frames.
-			int									States;		// Amount of state updates in the block.
+			std::map<IEntity*, _entity_state*>		Entities;	// Map of entities that exist throughout the entire timeblock
+																// and the state that corresponds to the the entity at the
+																// begining of the block.
+			std::map<IEntity*, _entity_state*>		Introduced; // Map of entities introduced in this time block and their
+																// first state.
+			std::map<IEntity*, _entity_state*>		Removed;	// Map of entities removed in this time block and their
+																// last state.
+			_time_block*							Prev;		// Last time block.
+			_time_block*							Child;		// Smaller time block with same ending time.
+			TimeStep								End;		// End of the time block.
 		};
 
-		Reality*					_source;
-		std::vector<Reality*>		_derived;
-		TimeStep					_end;
-		_time_block*				_block;		// Block enclosing this reality.
+		Reality*								_source;
+		std::vector<Reality*>					_derived;
+		_time_block								_timeblock;
 
 		void	_add_entity_state(_entity_state* State);
 	};
