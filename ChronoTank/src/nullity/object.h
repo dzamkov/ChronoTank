@@ -63,37 +63,6 @@ namespace nullity {
 		/// then be independant.
 		virtual IObject*		Clone();
 
-		/// Called when the object needs to handle a message.
-		virtual void	OnReceiveMessage(IMessageNotice* Notice);
-
-		/// Called when a message was sent to the object, but that time has already passed
-		/// for the object.
-		virtual void	OnSkipMessage(IMessageNotice* Notice);
-
-	protected:
-
-		/// Sends a message to another entity. The message will be recevied by an object of
-		/// the entity that is at the relative destination time. For example, if an object
-		/// sends a message to another object with the destination of -5, the other object
-		/// will get a OnReceiveMessage callback 5 seconds before the original object sent
-		/// it. The source value of the callback will be 5, because that's the relative
-		/// time when the message was sent.
-		void			SendMessage(IEntity* Entity, TimeStep Destination, IMessage* Message);
-
-		/// Sends a message to the entity of this object at the relative destination time. If
-		/// the destination is negative, the object will reveive an OnSkipMessage callback for
-		/// that message(This is because the sender should have actually received its own 
-		/// message before it sent it).
-		void			SendMessage(TimeStep Destination, IMessage* Message);
-
-		/// Sends a message to this entity at this time. This is useful when the object
-		/// has behavior not entirely defined by its state and interactions. This allows
-		/// the object to repeat all previous "random" behavior. The message is not
-		/// received on the object that sent it, and will only be received by another
-		/// object of the same entity. The source value of the OnReceiveMessage callback
-		/// will be 0 when it is received.
-		void			SendMessage(IMessage* Message);
-
 	private:
 		IFrame*					_frame;
 		IEntity*				_entity;
@@ -109,43 +78,6 @@ namespace nullity {
 	class IEntity {
 	public:
 
-	};
-	
-	/// A message that can be sent from any entity at any time period to any other
-	/// entity at any other time.
-	class IMessage {
-	public:
-
-		/// Deletes the message when it is no longer needed.
-		virtual void			Destroy() = 0;
-
-	};
-
-	/// A message notice contains a message along with information of its sender,
-	/// source and destination.
-	class IMessageNotice {
-	public:
-
-		/// Gets the message contained in the notice.
-		virtual IMessage*		GetMessage() = 0;	
-
-		/// Gets the entity that sent the message.
-		virtual IEntity*		GetSender() = 0;
-
-		/// Gets the entity the message was meant for. This
-		/// is most likely the entity that recieved the notice.
-		virtual IEntity*		GetRecipient() = 0;
-
-		/// Gets the time the message was sent relative to
-		/// the time the notice was recieved.
-		virtual TimeStep		GetSource() = 0;
-
-		/// Gets the time the message is meant to be received relative
-		/// to the time the notice was recieved. This is usually 0.
-		virtual TimeStep		GetDestination() = 0;
-
-		/// Prevents this message from being sent.
-		virtual void			Cancel() = 0;
 	};
 
 	/// Creates a clone of the specified object preserving entity information.

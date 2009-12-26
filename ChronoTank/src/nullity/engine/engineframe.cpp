@@ -10,36 +10,6 @@ using namespace nullity;
 /*	Frame functions definitions     			*/
 /************************************************/
 //--
-TimeStep MessageNotice::GetDestination() {
-	return this->Destination;
-}
-
-//--
-TimeStep MessageNotice::GetSource() {
-	return this->Source;
-}
-
-//--
-IEntity* MessageNotice::GetSender() {
-	return this->MessageData->From;
-}
-
-//--
-IEntity* MessageNotice::GetRecipient() {
-	return this->MessageData->To;
-}
-
-//--
-IMessage* MessageNotice::GetMessage() {
-	return this->MessageData->Message;
-}
-
-//--
-void MessageNotice::Cancel() {
-	this->Frame->_tasks.CancelledMessages.push_back(this->MessageData);
-}
-
-//--
 void ObjectEx::Destroy() {
 	this->Object->Destroy();
 	if(this->Visual != NULL) {
@@ -70,16 +40,11 @@ void ObjectEx::Update(TimeStep Time, int Flags) {
 }
 
 //--
-void Frame::Init(World* World, TimeStep Time) {
-	// Set frame values
-	this->_world = World;
+void Frame::Init(TimeStep Time, Reality* Reality, bool Write) {
 	this->_time = Time;
-
-	// Set initial flags
+	this->_reality = Reality;
+	this->_write = Write;
 	this->SetVisualFlags(VisualFlagNoCreation | VisualFlagNoRender);
-
-	// Load data
-	this->_world->LoadIntoFrame(this->_time, this);
 }
 
 //--
@@ -89,6 +54,7 @@ void Frame::Destroy() {
 	{
 		(*it).second.Destroy();
 	}
+	this->_reality->_remove_frame(this);
 }
 
 //--
@@ -100,28 +66,6 @@ void Frame::Update(TimeStep Time) {
 	// Tasks
 	this->_tasks.PerformTasks(this);
 
-	// Messages
-	std::map<Entity*, std::vector<MessageEx*>> messages = this->_world->GetReceivedMessages(ustart, uend);
-	for(std::map<Entity*, std::vector<MessageEx*>>::iterator mit = messages.begin();
-		mit != messages.end(); mit++)
-	{
-		std::vector<MessageEx*>& ms = (*mit).second;
-		IObject* obj = this->ObjectForEntity((*mit).first);
-		if(obj) {
-			for(std::vector<MessageEx*>::iterator mmit = ms.begin();
-				mmit != ms.end(); mmit++)
-			{
-				MessageEx* messagedata = *mmit;
-				MessageNotice mn;
-				mn.Frame = this;
-				mn.MessageData = messagedata;
-				mn.Destination = messagedata->Destination - ustart;
-				mn.Source = messagedata->Source - ustart;
-				obj->OnReceiveMessage(&mn);
-			}
-		}
-	}
-
 	// Object updates
 	for(std::map<Entity*, ObjectEx>::iterator it = this->_objects.begin();
 		it != this->_objects.end(); it++)
@@ -130,7 +74,7 @@ void Frame::Update(TimeStep Time) {
 		TimeStep utime = Time * this->GetTimeRateForObject(obj.Object);
 		obj.Manage(this->_visflags, this->_visparams);
 		obj.Update(utime, this->_visflags);
-		this->_world->RecordState(uend, obj.Object);
+		this->_reality->RecordState(uend, obj.Object);
 	}
 
 	// Status
@@ -163,11 +107,6 @@ TimeStep Frame::GetTimeRateForObject(IObject* Object) {
 }
 
 //--
-IWorld* Frame::GetWorld() {
-	return this->_world;
-}
-
-//--
 void Frame::SetVisualFlags(int Flags) {
 	this->_visflags = Flags;
 }
@@ -192,38 +131,8 @@ void Frame::RenderVisuals() {
 }
 
 //--
-void Frame::SendMessage(IObject* From, IEntity* To, TimeStep Offset, IMessage* Message) {
-	// Set message parameters.
-	TimeStep time = this->_time;
-	MessageEx* me = this->_world->CreateMessage();
-	me->Destination = time + Offset;
-	me->From = (Entity*)From->GetEntity();
-	me->To = (Entity*)To;
-	me->Source = time;
-	me->Message = Message;
-	
-	// Add to outbox.
-	this->_tasks.SentMessages.push_back(me);
-}
-
-//--
-void Frame::OnSentMessage(MessageEx* Message) {
-	TimeStep time = this->_time;
-
-	// If its after the time the message was intended for
-	if(time > Message->Destination) {
-
-		// Find the recipient.
-		IObject* rec = this->ObjectForEntity(Message->To);
-		if(rec) {
-			MessageNotice mn;
-			mn.Frame = this;
-			mn.MessageData = Message;
-			mn.Destination = Message->Destination - time;
-			mn.Source = Message->Source - time;
-			rec->OnSkipMessage(&mn);
-		}
-	}
+void Frame::OnRealityDestroyed() {
+	this->Destroy();
 }
 
 //--
@@ -237,21 +146,12 @@ IObject* Frame::ObjectForEntity(Entity* E) {
 }
 
 //--
+void Frame::_swap_reality(Reality* Reality) {
+	this->_reality = Reality;
+}
+
+//--
 void Frame::_tasklist::PerformTasks(Frame* Frame) {
-	// Send out messages
-	for(std::vector<MessageEx*>::iterator mit = this->SentMessages.begin();
-		mit != this->SentMessages.end(); mit++)
-	{
-		Frame->_world->SendMessage(*mit);
-	}
-
-	// Cancel messages
-	for(std::vector<MessageEx*>::iterator mit = this->CancelledMessages.begin();
-		mit != this->CancelledMessages.end(); mit++)
-	{
-		Frame->_world->CancelMessage(*mit);
-	}
-
 	// Spawning
 	for(std::vector<IObject*>::iterator oit = this->SpawnedObjects.begin();
 		oit != this->SpawnedObjects.end(); oit++)

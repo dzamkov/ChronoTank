@@ -133,7 +133,7 @@ void GameDef::Init(irr::IrrlichtDevice* Device) {
 	this->_gameobj->Init();
 	this->_world = CreateWorld();
 	this->_world->Init(this->_gameobj);
-	this->_frame = this->_world->CreateOriginFrame();
+	this->_frame = this->_world->GetOriginFrame();
 
 	// Visuals for frame
 	this->_frame->SetVisualParameters(VisualParameters::AsRootNode(this->_device));

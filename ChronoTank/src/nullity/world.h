@@ -34,8 +34,8 @@ namespace nullity {
 		/// Destroys the world and all its resources.
 		virtual void		Destroy() = 0;
 
-		/// Creates a frame corresponding to the origin of the worlds time.
-		virtual IFrame*		CreateOriginFrame() = 0;
+		/// Gets a frame corresponding to the origin of the worlds time.
+		virtual IFrame*		GetOriginFrame() = 0;
 	};
 
 	/// A possible progression of a world. For example, the events leading up
@@ -79,12 +79,6 @@ namespace nullity {
 		/// Gets the rate at which time passes for the specified object, relative
 		/// to absoulte time. The object must exist in this frame.
 		virtual TimeStep	GetTimeRateForObject(IObject* Object) = 0;
-
-		/// Gets the world this frame is in.
-		virtual IWorld*		GetWorld() = 0;
-
-		/// Sends a message to an entity at a certain offset from the frame's time.
-		virtual void		SendMessage(IObject* From, IEntity* To, TimeStep Offset, IMessage* Message) = 0;
 
 		/// Sets the flags for the visual appearence of the frame. These
 		/// flags should be from VisualFlags.

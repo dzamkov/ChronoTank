@@ -56,31 +56,6 @@ IObject* IObject::Clone() {
 }
 
 //--
-void IObject::SendMessage(IEntity* Entity, TimeStep Destination, IMessage* Message) {
-	this->GetFrame()->SendMessage(this, Entity, Destination, Message);
-}
-
-//--
-void IObject::SendMessage(TimeStep Destination, IMessage* Message) {
-	this->SendMessage(this->GetEntity(), Destination, Message);
-}
-
-//--
-void IObject::SendMessage(IMessage* Message) {
-	this->SendMessage(0.0, Message);
-}
-
-//--
-void IObject::OnReceiveMessage(IMessageNotice* Notice) {
-
-}
-
-//--
-void IObject::OnSkipMessage(IMessageNotice* Notice) {
-
-}
-
-//--
 IObject* nullity::Clone(IObject* Object) {
 	IObject* clone = Object->Clone();
 	if(clone != NULL) {
