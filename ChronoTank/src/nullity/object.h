@@ -3,6 +3,7 @@
 
 #include <irrlicht.h>
 
+#include "time.h"
 #include "visual.h"
 
 namespace nullity {

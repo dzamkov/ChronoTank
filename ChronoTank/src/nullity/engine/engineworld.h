@@ -8,38 +8,10 @@
 #include "engineentity.h"
 #include "engineframe.h"
 
-#include "../eventlog.h"
 #include "../world.h"
 
 namespace nullity {
-	struct MessageEvent;
-	struct MessageEx;
 	class World;
-
-	/// An event that indicates a messages is recieved.
-	struct MessageEvent : public EventLog::Event {
-		MessageEx*		MessageData;
-
-		const static int		Flag = 0x00001000;
-
-		void Remove();
-	};
-
-	/// An extended message containing information about its
-	/// sender, receiver and time.
-	struct MessageEx {
-		Entity*				From;
-		TimeStep			Source;
-		Entity*				To;
-		TimeStep			Destination;
-
-		/// The actual message data.
-		IMessage*			Message;
-
-		/// The corresponding received event for this message
-		/// definition.
-		MessageEvent*		Event;
-	};
 
 	/// An implemented interface to a world.
 	class World : public IWorld {

@@ -5,7 +5,6 @@
 #include <set>
 #include <map>
 
-#include "../eventlog.h"
 #include "../world.h"
 
 namespace nullity {

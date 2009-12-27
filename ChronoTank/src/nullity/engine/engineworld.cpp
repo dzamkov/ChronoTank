@@ -11,11 +11,6 @@ using namespace nullity;
 /*	World functions definitions     			*/
 /************************************************/
 //--
-void MessageEvent::Remove() {
-	delete this;
-}
-
-//--
 void World::Init(IObject* Root) { 
 	this->_rootreality = new Reality();
 	this->_rootreality->Init(0.0f, this->CreateFrame());

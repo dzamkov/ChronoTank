@@ -176,6 +176,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\nullity\time.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\nullity\time.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\nullity\visual.cpp"
 				>
 			</File>
