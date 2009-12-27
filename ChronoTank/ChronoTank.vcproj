@@ -160,11 +160,11 @@
 			Name="nullity"
 			>
 			<File
-				RelativePath=".\src\nullity\eventlog.cpp"
+				RelativePath=".\src\nullity\channel.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\nullity\eventlog.h"
+				RelativePath=".\src\nullity\channel.h"
 				>
 			</File>
 			<File
@@ -173,14 +173,6 @@
 			</File>
 			<File
 				RelativePath=".\src\nullity\object.h"
-				>
-			</File>
-			<File
-				RelativePath=".\src\nullity\timemanipulator.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\nullity\timemanipulator.h"
 				>
 			</File>
 			<File

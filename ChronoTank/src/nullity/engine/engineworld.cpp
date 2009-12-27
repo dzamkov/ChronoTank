@@ -30,7 +30,7 @@ void World::Destroy() {
 	{
 		(*it).Destroy();
 	}
-	delete this->_rootreality;
+	this->_rootreality->Destroy();
 	delete this;
 }
 
