@@ -71,7 +71,7 @@ void Frame::Update(TimeStep Time) {
 		it != this->_objects.end(); it++)
 	{
 		ObjectEx& obj = (*it).second;
-		TimeStep utime = Time * this->GetTimeRateForObject(obj.Object);
+		TimeStep utime = Time;
 		obj.Manage(this->_visflags, this->_visparams);
 		obj.Update(utime, this->_visflags);
 		this->_reality->RecordState(uend, obj.Object);
@@ -79,11 +79,6 @@ void Frame::Update(TimeStep Time) {
 
 	// Status
 	this->_time = uend;
-}
-
-//--
-void Frame::UpdateForObject(IObject* Object, TimeStep Time) {
-	this->Update(Time / this->GetTimeRateForObject(Object));
 }
 
 //--
@@ -98,12 +93,6 @@ void Frame::AddObject(IObject* Object) {
 	SetObjectFrame(objex.Object, this);
 	objex.Manage(this->_visflags, this->_visparams);
 	this->_objects[(Entity*)(objex.Object->GetEntity())] = objex;
-}
-
-//--
-TimeStep Frame::GetTimeRateForObject(IObject* Object) {
-	// TODO: Time manipulators
-	return 1.0f;
 }
 
 //--
@@ -136,8 +125,8 @@ void Frame::OnRealityDestroyed() {
 }
 
 //--
-IObject* Frame::ObjectForEntity(Entity* E) {
-	std::map<Entity*, ObjectEx>::iterator ent = this->_objects.find(E);
+IObject* Frame::ObjectFor(IEntity* E) {
+	std::map<Entity*, ObjectEx>::iterator ent = this->_objects.find((Entity*)E);
 	if(ent != this->_objects.end()) {
 		return (*ent).second.Object;
 	} else {

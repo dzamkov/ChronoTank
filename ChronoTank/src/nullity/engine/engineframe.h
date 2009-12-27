@@ -47,14 +47,9 @@ namespace nullity {
 		/// Callback for when this frames reality is destroyed.
 		void		OnRealityDestroyed();
 
-		/// Gets the object for the specified entity or returns null
-		/// if the object doesnt exist for the entity.
-		IObject*	ObjectForEntity(Entity* Entity);
-
+		IObject*	ObjectFor(IEntity* Entity);
 		void		Update(TimeStep Time);
-		void		UpdateForObject(IObject* Object, TimeStep Time);
 		void		SpawnObject(IObject* Object);
-		TimeStep	GetTimeRateForObject(IObject* Object);
 		void		SetVisualFlags(int Flags);
 		void		SetVisualParameters(VisualParameters Params);
 		void		RenderVisuals();

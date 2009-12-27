@@ -158,11 +158,7 @@ void GameDef::Update(TimeStep Time) {
 	this->_curtimerate = exp(ctrl);
 
 	TimeStep tchange = Time * this->_curtimerate;
-	if(this->_gameobj->Tank == NULL) {
-		this->_frame->Update(tchange);
-	} else {
-		this->_frame->UpdateForObject(this->_gameobj->Tank, tchange);
-	}
+	this->_frame->Update(tchange);
 }
 
 //--

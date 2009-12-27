@@ -160,14 +160,6 @@
 			Name="nullity"
 			>
 			<File
-				RelativePath=".\src\nullity\channel.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\nullity\channel.h"
-				>
-			</File>
-			<File
 				RelativePath=".\src\nullity\object.cpp"
 				>
 			</File>

@@ -68,17 +68,13 @@ namespace nullity {
 		/// specified amount of time.
 		virtual void		Update(TimeStep Time) = 0;
 
-		/// Updates the frame for an amount of time so that the object
-		/// experiences the specified amount of time.
-		virtual void		UpdateForObject(IObject* Object, TimeStep Time) = 0;
-
 		/// Spawns an object in the frame, causing it to be created and added
 		/// to the world on the next update.
 		virtual void		SpawnObject(IObject* Object) = 0;
 
-		/// Gets the rate at which time passes for the specified object, relative
-		/// to absoulte time. The object must exist in this frame.
-		virtual TimeStep	GetTimeRateForObject(IObject* Object) = 0;
+		/// Gets the object that represents the specified entity in this frame or returns NULL
+		/// if the object doesnt exist in the frame.
+		virtual IObject*	ObjectFor(IEntity* Entity) = 0;
 
 		/// Sets the flags for the visual appearence of the frame. These
 		/// flags should be from VisualFlags.

@@ -8,6 +8,10 @@ namespace nullity {
 
 	/// Defines an absolute time.
 	typedef TimeStep	Time;
+
+	/// Gets the time the specified amount after the specified time.
+	Time		After(Time Time, TimeStep Amount);
+
 }
 
 #endif
