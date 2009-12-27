@@ -8,9 +8,6 @@ namespace nullity {
 	/// An implemented interface to an entity that uses World.
 	class Entity : public IEntity {
 
-
-
-
 	};
 
 }

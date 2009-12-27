@@ -201,7 +201,7 @@ void Reality::RecordState(TimeStep Time, IObject* Object) {
 	_histtype& h = this->_data[ent];
 	_histtype::iterator it = h.begin();
 	_histtype::iterator nit = it;
-	while(it != h.end() && (*nit).Time < Time) {
+	while(nit != h.end() && (*nit).Time < Time) {
 		it = nit;
 		nit++;
 	}

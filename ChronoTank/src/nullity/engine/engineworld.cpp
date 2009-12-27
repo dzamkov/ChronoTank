@@ -17,10 +17,9 @@ void MessageEvent::Remove() {
 
 //--
 void World::Init(IObject* Root) { 
-	SetObjectEntity(Root, this->CreateEntity());
 	this->_rootreality = new Reality();
 	this->_rootreality->Init(0.0f, this->CreateFrame());
-	this->_rootreality->GetWriteFrame()->AddObject(Root);
+	this->_rootreality->GetWriteFrame()->SpawnObject(Root);
 }
 
 //--
@@ -55,6 +54,7 @@ Entity* World::CreateEntity() {
 //--
 Frame*	World::CreateFrame() {
 	Frame f;
+	f._world = this;
 	this->_frames.push_back(f);
 	return &(this->_frames.back());
 }
