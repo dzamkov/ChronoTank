@@ -62,7 +62,7 @@ void GameObj::Update(TimeStep Time) {
 
 //--
 void GameObj::Destroy() {
-	delete this;
+	IObject::Destroy();
 }
 
 //--

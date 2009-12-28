@@ -25,13 +25,15 @@ namespace nullity {
 	class IObject {
 	public:
 		IObject();
+		virtual ~IObject();
 
 		/// Updates the object by the specified amount of seconds.
 		virtual void			Update(TimeStep Time);
 
 		/// Removes the resources used for the object. Should be called instead
-		/// of delete. 
-		virtual void			Destroy() = 0;
+		/// of delete. All derived objects should call the object's destroy method
+		/// in their destroy method.
+		virtual void			Destroy();
 		
 		/// Gets the position of the center of the object.
 		virtual Vector			GetPosition();

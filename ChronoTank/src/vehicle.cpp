@@ -58,7 +58,7 @@ void PlayerTankDef::Update(TimeStep Time) {
 
 //--
 void PlayerTankDef::Destroy() {
-	delete this;
+	IObject::Destroy();
 }
 
 //--

@@ -16,8 +16,18 @@ IObject::IObject() {
 }
 
 //--
+IObject::~IObject() {
+
+}
+
+//--
 void IObject::Update(TimeStep Time) {
 
+}
+
+//--
+void IObject::Destroy() {
+	delete this;
 }
 
 //--

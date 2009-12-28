@@ -71,7 +71,7 @@ void ClockObjectDef::Update(TimeStep Time) {
 
 //--
 void ClockObjectDef::Destroy() {
-	delete this;
+	IObject::Destroy();
 }
 
 //--
