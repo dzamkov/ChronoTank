@@ -1,8 +1,9 @@
 /************************************************/
 /*	Object Implementation     					*/
 /************************************************/
+#include <assert.h>
+
 #include "object.h"
-#include "world.h"
 
 using namespace nullity;
 
@@ -11,75 +12,45 @@ using namespace nullity;
 /****************************************/
 //--
 IObject::IObject() {
-	this->_entity = NULL;
-	this->_frame = NULL;
+	this->_flags = _flag_none;
 }
 
 //--
 IObject::~IObject() {
-
-}
-
-//--
-void IObject::Update(TimeStep Time) {
-
+	this->_flags = this->_flags | _flag_deallocated;
 }
 
 //--
 void IObject::Destroy() {
+	this->_flags = this->_flags | _flag_destroyed;
+	this->Deallocate();
+}
+
+//--
+void IObject::Deallocate() {
 	delete this;
 }
 
 //--
-Vector IObject::GetPosition() {
-	return Vector();
-}
-
-//--
-Vector IObject::GetRotation() {
-	return Vector();
-}
-
-//--
-IFrame* IObject::GetFrame() {
-	return this->_frame;
-}
-
-//--
-IEntity* IObject::GetEntity() {
-	return this->_entity;
-}
-
-//--
-IVisual* IObject::CreateVisual(VisualParameters Params) {
-	return NULL;
-}
-
-//--
-int IObject::GetSpecialFlag() { 
-	return 0x00000000;
-}
-
-//--
-IObject* IObject::Clone() {
-	return NULL;
-}
-
-//--
-IObject* nullity::Clone(IObject* Object) {
-	IObject* clone = Object->Clone();
-	if(clone != NULL) {
-		clone->_entity = Object->_entity;
+void IObject::_incref(IObject* From, int Amount) {
+	// From Refs
+	if(From != NULL) {
+		std::map<IObject*, int>::iterator it = From->_refs_to.find(this);
+		if(it == From->_refs_to.end()) {
+			From->_refs_to[this] = Amount;
+		} else {
+			int& rc = (*it).second;
+			rc += Amount;
+			if(rc == 0) {
+				From->_refs_to.erase(it);
+			}
+		}
 	}
-	return clone;
-}
 
-//--
-void nullity::SetObjectEntity(IObject* Object, IEntity* Entity) {
-	Object->_entity = Entity;
-}
-
-//--
-void nullity::SetObjectFrame(IObject* Object, IFrame* Frame) {
-	Object->_frame = Frame;
+	// Refs
+	this->_refs += Amount;
+	assert(this->_refs >= 0);
+	if(this->_refs == 0) {
+		this->Destroy();
+	}
 }

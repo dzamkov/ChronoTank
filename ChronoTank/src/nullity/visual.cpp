@@ -33,8 +33,8 @@ VisualParameters VisualParameters::AsRootNode(irr::IrrlichtDevice* Device) {
 /*	Visual								*/
 /****************************************/
 //--
-void IVisual::Destroy() {
-	delete this;
+void IVisual::Update(StackPtr<IEntity>::Ref Entity) {
+
 }
 
 //--
@@ -48,63 +48,35 @@ void IVisual::Render() {
 //--
 class LoadedVisual : public IVisual {
 public:
-	LoadedVisual(VisualParameters Params, io::IReadFile* File, IObject* Object);
-	~LoadedVisual();
+	LoadedVisual(VisualParameters Params, io::IReadFile* File);
 
-	void		Destroy();
+	void	Update(StackPtr<IEntity>::Ref Entity);
+	void	Destroy();
 
-	void		Update(TimeStep Time);
-	IObject*	GetTarget();
-
-	IObject*				Target;
 	scene::ISceneNode*		Node;
 };
 
 //--
-class VisualSerializer : public scene::ISceneUserDataSerializer {
-public:
-	io::IAttributes*		createUserData(scene::ISceneNode* For);
-	void					OnCreateNode(scene::ISceneNode* Node);
-	void					OnReadUserData(scene::ISceneNode* For, io::IAttributes* UserData);
-
-	scene::ISceneNode*		PrevRoot;
-	scene::ISceneNode*		TargetRoot;
-	scene::ISceneNode*		SceneRoot;
-};
-
-//--
-IVisual* nullity::LoadVisualFromFile(VisualParameters Params, io::IReadFile* File, IObject* Object) {
-	return new LoadedVisual(Params, File, Object);
+IVisual* nullity::LoadVisualFromFile(VisualParameters Params, io::IReadFile* File) {
+	return new LoadedVisual(Params, File);
 }
 
 //--
 LoadedVisual::LoadedVisual(
 	VisualParameters Params, 
-	io::IReadFile* File, 
-	IObject* Object)
+	io::IReadFile* File)
 {
-	this->Target = Object;
-
 	scene::IMesh* mesh = Params.SceneManager->getMesh(File);
 	this->Node = Params.SceneManager->addMeshSceneNode(mesh, Params.ParentNode, Params.ID);
 }
 
 //--
-LoadedVisual::~LoadedVisual() {
-}
-
-//--
 void LoadedVisual::Destroy() {
-	delete this;
+	this->Node->remove();
+	IVisual::Destroy();
 }
 
 //--
-void LoadedVisual::Update(TimeStep Time) {
-	this->Node->setPosition(this->Target->GetPosition());
-	this->Node->setRotation(this->Target->GetRotation());
-}
+void LoadedVisual::Update(StackPtr<IEntity>::Ref Entity) {
 
-//--
-IObject* LoadedVisual::GetTarget() {
-	return this->Target;
 }

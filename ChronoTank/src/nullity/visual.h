@@ -4,9 +4,10 @@
 #include <irrlicht.h>
 #include <string>
 
+#include "object.h"
+#include "entity.h"
+
 namespace nullity {
-	class IObject;
-	typedef float	TimeStep;
 
 	/// Set of parameters used to create a visual. Specifies render target, location, etc.
 	struct VisualParameters {
@@ -25,30 +26,23 @@ namespace nullity {
 	};
 
 	/// A visual representation of - VISUAL IS A NOUN. A visual is a representation
-	/// of an object. The visual uses the data that the object produces to render
-	/// it in the scene. The object is not usually aware of its visual.
-	class IVisual {
+	/// of an entity. The visual uses the data that the entity produces to render
+	/// it in the scene. The entity is not usually aware of its visual.
+	class IVisual : public IObject {
 	public:
 		virtual ~IVisual() { }
 
-		/// Gets the object this visual represents.
-		virtual IObject*		GetTarget() = 0;
-
-		/// Updates the visual by the specified amount of time.
-		virtual void			Update(TimeStep Time) = 0;
-
+		/// Updates the visual to render the specified entity in its given state.
+		virtual void			Update(StackPtr<IEntity>::Ref Entity);
+			
 		/// Renders the visual. This will be called after the scene manager
 		/// renders.
 		virtual void			Render();
 
-		/// Destroys the visual. This should be called instead of delete.
-		virtual void			Destroy();
-
 	};
 
-	/// Loads a visual for the object from the specified file. 
-	IVisual*	LoadVisualFromFile(VisualParameters Params, irr::io::IReadFile* File, IObject* Object);
-
+	/// Loads a visual from the specified file. 
+	IVisual*	LoadVisualFromFile(VisualParameters Params, irr::io::IReadFile* File);
 
 }
 

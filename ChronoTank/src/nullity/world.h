@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "object.h"
+#include "entity.h"
 #include "visual.h"
 
 namespace nullity {
@@ -20,35 +21,32 @@ namespace nullity {
 		VisualFlagNoRender			= 0x00000020,
 	};
 		
-	/// Organizes a set of objects and controls their interactions.
-	class IWorld {
+	/// Organizes a set of entities and controls their interactions.
+	class IWorld : public IObject {
 	public:
 
-		/// Initializes this world. The root object will be created at
+		/// Initializes this world. The root entity will be created at
 		/// the origin frame.
-		virtual void		Init(IObject* Root) = 0;
+		virtual void					Init(StackPtr<IEntity>::Ref Root) = 0;
 
 		/// Gets the reality at the start of the world.
-		virtual IReality*	GetRootReality() = 0;
-
-		/// Destroys the world and all its resources.
-		virtual void		Destroy() = 0;
+		virtual StackPtr<IReality>		GetRootReality() = 0;
 
 		/// Gets a frame corresponding to the origin of the worlds time.
-		virtual IFrame*		GetOriginFrame() = 0;
+		virtual StackPtr<IFrame>		GetOriginFrame() = 0;
 	};
 
 	/// A possible progression of a world. For example, the events leading up
 	/// to flipping a coin are in a single reality. Then, the one reality is split
 	/// into both possible outcomes of the coin flip. The source of these realities
 	/// is the original reality created before the coin was flipped.
-	class IReality {
+	class IReality : public IObject {
 	public:
 
 		/// Gets the reality this reality split off from. The source reality is actually
 		/// part of this reality, however it is not a possible outcome and is instead the
 		/// events leading up to the split.
-		virtual IReality*					GetSource() = 0;
+		virtual StackPtr<IReality>			GetSource() = 0;
 
 	};
 
@@ -57,24 +55,15 @@ namespace nullity {
 	/// happened and the ability to predict what will happen, an IFrame is a
 	/// representation of a present state of a scene, only knowing about what
 	/// is presently there.
-	class IFrame {
+	class IFrame : public IObject {
 	public:
-
-		/// Deletes the frame and all its resources. Its changes and effects
-		/// are preserved in its world.
-		virtual void		Destroy() = 0;
-
 		/// Updates and advances the frame and its contents by the
 		/// specified amount of time.
 		virtual void		Update(TimeStep Time) = 0;
 
-		/// Spawns an object in the frame, causing it to be created and added
+		/// Spawns an entity in the frame, causing it to be created and added
 		/// to the world on the next update.
-		virtual void		SpawnObject(IObject* Object) = 0;
-
-		/// Gets the object that represents the specified entity in this frame or returns NULL
-		/// if the object doesnt exist in the frame.
-		virtual IObject*	ObjectFor(IEntity* Entity) = 0;
+		virtual void		SpawnEntity(StackPtr<IEntity>::Ref Entity) = 0;
 
 		/// Sets the flags for the visual appearence of the frame. These
 		/// flags should be from VisualFlags.
@@ -89,7 +78,7 @@ namespace nullity {
 	};
 
 	/// Creates a world.
-	IWorld*		CreateWorld();
+	StackPtr<IWorld>		CreateWorld();
 
 }
 

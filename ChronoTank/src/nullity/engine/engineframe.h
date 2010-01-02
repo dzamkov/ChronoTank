@@ -5,23 +5,25 @@
 #include <map>
 
 #include "enginereality.h"
-#include "engineentity.h"
 
 #include "../visual.h"
+#include "../entity.h"
 #include "../object.h"
 #include "../world.h"
 
 namespace nullity {
 	class World;
 	class Frame;
-	struct ObjectEx;
+	struct EntityEx;
 
-	/// An extended object containing visual information.
-	struct ObjectEx {
-		IObject*		Object;
-		IVisual*		Visual;
+	/// An extended entity containing visual information.
+	struct EntityEx : public IObject {
+		EntityEx();
 
-		/// Destroys the object visual pair.
+		Ptr<IEntity>		Entity;
+		Ptr<IVisual>		Visual;
+
+		/// Destroys the entity visual pair.
 		void		Destroy();
 
 		/// Manages the visual aspects of the object.
@@ -34,54 +36,56 @@ namespace nullity {
 	/// An implemented interface to a frame that uses World.
 	class Frame : public IFrame {
 	public:
+		Frame();
 		
 		/// Creates a frame.
-		void		Init(TimeStep Time, Reality* Reality, bool Write);
+		void		Init(TimeStep Time, StackPtr<Reality> Reality, bool Write);
 
 		/// Destroys the frame and its resources.
 		void		Destroy();
 
-		/// Directly adds an object to the frame.
-		void		AddObject(IObject* Object);
+		/// Directly adds an entity to the frame.
+		void		AddEntity(StackPtr<IEntity> Entity);
 
 		/// Callback for when this frames reality is destroyed.
 		void		OnRealityDestroyed();
 
-		IObject*	ObjectFor(IEntity* Entity);
 		void		Update(TimeStep Time);
-		void		SpawnObject(IObject* Object);
+		void		SpawnEntity(StackPtr<IEntity> Entity);
 		void		SetVisualFlags(int Flags);
 		void		SetVisualParameters(VisualParameters Params);
 		void		RenderVisuals();
 
 	private:
-		VisualParameters					_visparams;
-		int									_visflags;
-		std::map<Entity*, ObjectEx>			_objects;
+		typedef	std::map<Ptr<IEntity>, Ptr<EntityEx>>	_entitymap;
+
+		VisualParameters		_visparams;
+		int						_visflags;
+		_entitymap				_entities;
 
 		// List of accumulated tasks for the frame.
 		struct _tasklist {
-			std::vector<IObject*>		SpawnedObjects;
+			std::vector<Ptr<IEntity>>		SpawnedEntities;
 
 			// Performs tasks.
-			void	PerformTasks(Frame*	Frame);
+			void	PerformTasks(Frame* Frame);
 		} _tasks;
 
 		// Swaps the frame to another reality. Can only be called
 		// by the current reality.
-		void			_swap_reality(Reality* Reality);
+		void			_swap_reality(StackPtr<Reality> Reality);
 
 		// Time the frame is in.
 		TimeStep		_time;
 
 		// Reality this frame reads/writes
-		Reality*		_reality;
+		Ptr<Reality>	_reality;
 
 		// Should the frame write to the reality.
 		bool			_write;
 
 		// World where the frames resources come from.
-		World*			_world;
+		Ptr<World>		_world;
 
 		friend class		World;
 		friend class		Reality;

@@ -4,6 +4,7 @@
 #include <irrlicht.h>
 #include <sstream>
 #include <iomanip>
+
 #include "clockobj.h"
 
 using namespace nullity;
@@ -13,6 +14,8 @@ using namespace irr;
 /****************************************/
 /*	Clock object						*/
 /****************************************/
+//--
+
 //--
 class ClockObjectDef : public IClockObject {
 public:

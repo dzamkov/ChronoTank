@@ -10,37 +10,44 @@ using namespace nullity;
 /*	Frame functions definitions     			*/
 /************************************************/
 //--
-void ObjectEx::Destroy() {
-	this->Object->Destroy();
-	if(this->Visual != NULL) {
-		this->Visual->Destroy();
-	}
+EntityEx::EntityEx() : Entity(this), Visual(this) {
+
 }
 
 //--
-void ObjectEx::Manage(int Flags, const VisualParameters& Params) {
-	if(this->Visual == NULL) {
+void EntityEx::Destroy() {
+	
+}
+
+//--
+void EntityEx::Manage(int Flags, const VisualParameters& Params) {
+	if(!this->Visual.IsNull()) {
 		if(Flags & VisualFlagFullDelete) {
-			this->Visual->Destroy();
-			this->Visual = NULL;
+			this->Visual.MakeNull();
 		}
 	} else {
 		if(Flags & VisualFlagAllowCreation) {
-			this->Visual = this->Object->CreateVisual(Params);
+			this->Visual = this->Entity->CreateVisual(Params);
 		}
 	}
 }
 
 //--
-void ObjectEx::Update(TimeStep Time, int Flags) {
-	this->Object->Update(Time);
+void EntityEx::Update(TimeStep Time, int Flags) {
+	this->Entity->Update(Time);
 	if(this->Visual != NULL) {
-		this->Visual->Update(Time);
+		this->Visual->Update(this->Entity);
 	}
 }
 
 //--
-void Frame::Init(TimeStep Time, Reality* Reality, bool Write) {
+Frame::Frame()
+: _reality(this), _world(this) 
+{
+}
+
+//--
+void Frame::Init(TimeStep Time, StackPtr<Reality> Reality, bool Write) {
 	this->_time = Time;
 	this->_reality = Reality;
 	this->_write = Write;
@@ -49,11 +56,6 @@ void Frame::Init(TimeStep Time, Reality* Reality, bool Write) {
 
 //--
 void Frame::Destroy() {
-	for(std::map<Entity*, ObjectEx>::iterator it = this->_objects.begin();
-		it != this->_objects.end(); it++)
-	{
-		(*it).second.Destroy();
-	}
 	this->_reality->_remove_frame(this);
 }
 
@@ -67,14 +69,14 @@ void Frame::Update(TimeStep Time) {
 	this->_tasks.PerformTasks(this);
 
 	// Object updates
-	for(std::map<Entity*, ObjectEx>::iterator it = this->_objects.begin();
-		it != this->_objects.end(); it++)
+	for(_entitymap::iterator it = this->_entities.begin();
+		it != this->_entities.end(); it++)
 	{
-		ObjectEx& obj = (*it).second;
+		EntityEx* ent = (*it).second;
 		TimeStep utime = Time;
-		obj.Manage(this->_visflags, this->_visparams);
-		obj.Update(utime, this->_visflags);
-		this->_reality->RecordState(uend, obj.Object);
+		ent->Manage(this->_visflags, this->_visparams);
+		ent->Update(utime, this->_visflags);
+		this->_reality->RecordState(uend, ent->Entity);
 	}
 
 	// Status
@@ -82,17 +84,16 @@ void Frame::Update(TimeStep Time) {
 }
 
 //--
-void Frame::SpawnObject(IObject* Object) {
-	SetObjectEntity(Object, this->_world->CreateEntity());
-	this->_tasks.SpawnedObjects.push_back(Object);
+void Frame::SpawnEntity(StackPtr<IEntity> Entity) {
+	this->_tasks.SpawnedEntities.push_back(ToPtr(this, Entity));
 }
 
 //--
-void Frame::AddObject(IObject* Object) {
-	ObjectEx objex; objex.Object = Object;
-	SetObjectFrame(objex.Object, this);
-	objex.Manage(this->_visflags, this->_visparams);
-	this->_objects[(Entity*)(objex.Object->GetEntity())] = objex;
+void Frame::AddEntity(StackPtr<IEntity> Entity) {
+	StackPtr<EntityEx> entex = new EntityEx(); 
+	entex->Entity = Entity;
+	entex->Manage(this->_visflags, this->_visparams);
+	this->_entities[ToPtr(this, Entity)] = ToPtr(this, entex);
 }
 
 //--
@@ -108,12 +109,12 @@ void Frame::SetVisualParameters(VisualParameters Params) {
 //--
 void Frame::RenderVisuals() {
 	if(this->_visflags & VisualFlagPerformRender) {
-		for(std::map<Entity*, ObjectEx>::iterator it = this->_objects.begin();
-			it != this->_objects.end(); it++)
+		for(_entitymap::iterator it = this->_entities.begin();
+			it != this->_entities.end(); it++)
 		{
-			ObjectEx& obj = (*it).second;
-			if(obj.Visual != NULL) {
-				obj.Visual->Render();
+			StackPtr<EntityEx> ent = (*it).second;
+			if(!ent->Visual.IsNull()) {
+				ent->Visual->Render();
 			}
 		}
 	}
@@ -125,26 +126,16 @@ void Frame::OnRealityDestroyed() {
 }
 
 //--
-IObject* Frame::ObjectFor(IEntity* E) {
-	std::map<Entity*, ObjectEx>::iterator ent = this->_objects.find((Entity*)E);
-	if(ent != this->_objects.end()) {
-		return (*ent).second.Object;
-	} else {
-		return NULL;
-	}
-}
-
-//--
-void Frame::_swap_reality(Reality* Reality) {
+void Frame::_swap_reality(StackPtr<Reality> Reality) {
 	this->_reality = Reality;
 }
 
 //--
 void Frame::_tasklist::PerformTasks(Frame* Frame) {
 	// Spawning
-	for(std::vector<IObject*>::iterator oit = this->SpawnedObjects.begin();
-		oit != this->SpawnedObjects.end(); oit++)
+	for(std::vector<Ptr<IEntity>>::iterator it = this->SpawnedEntities.begin();
+		it != this->SpawnedEntities.end(); it++)
 	{
-		Frame->AddObject(*oit);
+		Frame->AddEntity(*it);
 	}
 }

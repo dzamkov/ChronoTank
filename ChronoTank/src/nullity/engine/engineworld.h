@@ -5,7 +5,6 @@
 #include <map>
 
 #include "enginereality.h"
-#include "engineentity.h"
 #include "engineframe.h"
 
 #include "../world.h"
@@ -16,22 +15,13 @@ namespace nullity {
 	/// An implemented interface to a world.
 	class World : public IWorld {
 	public:
-		void		Init(IObject* Root);
-		void		Destroy();
+		void		Init(StackPtr<IEntity> Root);
 
-		IFrame*		GetOriginFrame();
-		IReality*	GetRootReality();
-
-		/// Creates a new frame for the world.
-		Frame*		CreateFrame();
-
-		/// Creates a new entity for use in the world.
-		Entity*		CreateEntity();
+		StackPtr<IFrame>		GetOriginFrame();
+		StackPtr<IReality>		GetRootReality();
 
 	private:
-		Reality*					_rootreality;
-		std::vector<Entity>			_entities;
-		std::vector<Frame>			_frames;
+		Ptr<Reality>				_rootreality;
 	};
 
 

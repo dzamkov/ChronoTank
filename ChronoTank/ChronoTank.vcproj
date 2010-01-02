@@ -160,6 +160,14 @@
 			Name="nullity"
 			>
 			<File
+				RelativePath=".\src\nullity\entity.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\nullity\entity.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\nullity\object.cpp"
 				>
 			</File>
@@ -194,14 +202,6 @@
 			<Filter
 				Name="engine"
 				>
-				<File
-					RelativePath=".\src\nullity\engine\engineentity.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\nullity\engine\engineentity.h"
-					>
-				</File>
 				<File
 					RelativePath=".\src\nullity\engine\engineframe.cpp"
 					>
