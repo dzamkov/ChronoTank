@@ -33,7 +33,7 @@ namespace nullity {
 		virtual ~IVisual() { }
 
 		/// Updates the visual to render the specified entity in its given state.
-		virtual void			Update(StackPtr<IEntity>::Ref Entity);
+		virtual void			Update(Ptr<IEntity> Entity);
 			
 		/// Renders the visual. This will be called after the scene manager
 		/// renders.

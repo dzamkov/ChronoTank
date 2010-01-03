@@ -14,7 +14,7 @@
 namespace nullity {
 	class IObject;
 	template <class Type> class Ptr;
-	template <class Type> class StackPtr;
+	template <class Type> class Ptr;
 
 	/// A generic representation of a logical object or system.
 	class IObject {
@@ -41,11 +41,9 @@ namespace nullity {
 		void		_incref(IObject* From, int Amount);
 
 		template<class> friend class	Ptr;
-		template<class> friend class	StackPtr;
 	};
 
-	/// Pointer to an object. The pointer is owned by another object with the
-	/// notion that when the owner object is destroyed, so is the pointer.
+	/// Generic definition for a pointer to an object.
 	template <class Type>
 	class Ptr {
 	public:
@@ -61,72 +59,109 @@ namespace nullity {
 			IObject*	_target;
 			TypePtr		_ptr;
 		};
-		void	_incref() { this->_target->_incref(this->_owner, 1); }
-		void	_decref() { this->_target->_incref(this->_owner, -1); }
+		void	_incref();
+		void	_decref();
 
 	public:
-		Ptr() { assert(false); } // Default should never be called but is left accesible.
-		Ptr(IObject* Owner) { this->_owner = Owner; this->_target = NULL; }
-		Ptr(IObject* Owner, TypePtr Ptr) { this->_owner = Owner; this->_ptr = Ptr; if(this->_target) this->_incref(); }
-		~Ptr() { if(this->_target) this->_decref(); }
-		
-		/// Sets the object this pointer points to.
-		void	SetTarget(const TypePtr& To) {
-			if(this->_target) this->_decref(); 
-			this->_target = To; 
-			if(this->_target) this->_incref(); 
-		}
-
-		bool					IsNull() { return this->_ptr == NULL; }
-		void					MakeNull() { this->SetTarget(NULL); }
-		TypePtr operator		=(const TypePtr& Other) { this->SetTarget(Other); return this->_ptr; }
-		TypePtr operator		->() { return this->_ptr; }
-		operator				TypePtr() const { return this->_ptr; }
-	};
-
-	/// Pointer on the stack that points to an object. This is like Ptr but with no option
-	/// for an owner object.
-	template <class Type>
-	class StackPtr {
-	public:
-		/// The actual pointer type used in this pointer.
-		typedef Type*	TypePtr;
-
-		/// Pass by reference pointer. By using a simple "::Ref" at the end of the type in
-		/// a parameter you're saying, you can give me the actual pointer, not just a copy, and
-		/// I promise not to screw with it.
-		typedef const StackPtr<Type>&		Ref;
-
-	private:
-		union {
-			IObject*	_target;
-			TypePtr		_ptr;
-		};
-
-	public:
-		StackPtr() { this->_target = NULL; }
-		StackPtr(const TypePtr& To) { this->_ptr = To; this->_target->_incref(NULL, 1); }
-		StackPtr(const StackPtr& Other) { this->_ptr = Other._ptr; this->_target->_incref(NULL, 1); }
-		StackPtr(const Ptr<Type>& Other) { this->_ptr = Other; this->_target->_incref(NULL, 1); }
-		~StackPtr() { if(this->_target) this->_target->_incref(NULL, -1); }
+		Ptr();
+		Ptr(const TypePtr& Target);
+		Ptr(IObject* Owner, const TypePtr& Target);
+		~Ptr();
 
 		/// Sets the object this pointer points to.
-		void	SetTarget(const TypePtr& To) {
-			if(this->_target) this->_target->_incref(NULL, -1); 
-			this->_target = To; 
-			if(this->_target) this->_target->_incref(NULL, 1);
-		}
+		void	SetTarget(const TypePtr& To);
 
-		bool					IsNull() { return this->_ptr == NULL; }
-		void					MakeNull() { this->SetTarget(NULL); }
-		TypePtr operator		=(const TypePtr& Other) { this->SetTarget(Other); return this->_ptr; }
-		TypePtr operator		->() const { return this->_ptr; }
-		operator				TypePtr() { return this->_ptr; }
+		/// Sets the owner of this pointer. Fails if target is not null. The pointer
+		/// must be destroyed as a result of its owner being destroyed.
+		void	SetOwner(IObject* Owner);
 
+		bool					IsNull() const;
+		void					MakeNull();
+		TypePtr operator		=(const TypePtr& Other);
+		TypePtr operator		->() const;
+		operator				TypePtr() const;
 	};
 
-	template <class Type> Ptr<Type> ToPtr(IObject* Obj, typename StackPtr<Type> Target) {
-		return Ptr<Type>(Obj, Target);
+	//--
+	template <class Type> void Ptr<Type>::_incref() {
+		this->_target->_incref(this->_owner, 1);
+	}
+
+	//--
+	template <class Type> void Ptr<Type>::_decref() {
+		this->_target->_incref(this->_owner, -1);
+	}
+
+	//--
+	template <class Type> Ptr<Type>::Ptr() {
+		this->_target = NULL;
+		this->_owner = NULL;
+	}
+
+	//--
+	template <class Type> Ptr<Type>::Ptr(const TypePtr& Target) {
+		this->_owner = NULL;
+		this->_ptr = Target;
+		this->_incref();
+	}
+
+	//--
+	template <class Type> Ptr<Type>::Ptr(IObject* Owner, const TypePtr& Target) {
+		this->_owner = Owner;
+		this->_ptr = Target;
+		this->_incref();
+	}
+
+	//--
+	template <class Type> Ptr<Type>::~Ptr() {
+		if(this->_target) {
+			this->_decref();
+		}
+	}
+	
+	//--
+	template <class Type> void Ptr<Type>::SetTarget(const TypePtr& Target) {
+		if(this->_ptr != Target) {
+			if(this->_target) {
+				this->_decref();
+			}
+			this->_ptr = Target;
+			if(this->_target) {
+				this->_incref();
+			}
+		}
+	}
+
+	//--
+	template <class Type> void Ptr<Type>::SetOwner(IObject* Owner) {
+		assert(this->_target == NULL);
+		this->_owner = Owner;
+	}
+
+	//--
+	template <class Type> bool Ptr<Type>::IsNull() const {
+		return this->_target == NULL;
+	}
+
+	//--
+	template <class Type> void Ptr<Type>::MakeNull() {
+		this->SetTarget(NULL);
+	}
+
+	//--
+	template <class Type> Type* Ptr<Type>::operator =(const TypePtr& Other) {
+		this->SetTarget(Other);
+		return Other;
+	}
+
+	//--
+	template <class Type> Type* Ptr<Type>::operator ->() const {
+		return this->_ptr;
+	}
+
+	//--
+	template <class Type> Ptr<Type>::operator TypePtr() const {
+		return this->_ptr;
 	}
 }
 

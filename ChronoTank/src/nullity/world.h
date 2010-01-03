@@ -27,13 +27,13 @@ namespace nullity {
 
 		/// Initializes this world. The root entity will be created at
 		/// the origin frame.
-		virtual void					Init(StackPtr<IEntity>::Ref Root) = 0;
+		virtual void				Init(Ptr<IEntity> Root) = 0;
 
 		/// Gets the reality at the start of the world.
-		virtual StackPtr<IReality>		GetRootReality() = 0;
+		virtual Ptr<IReality>		GetRootReality() = 0;
 
 		/// Gets a frame corresponding to the origin of the worlds time.
-		virtual StackPtr<IFrame>		GetOriginFrame() = 0;
+		virtual Ptr<IFrame>			GetOriginFrame() = 0;
 	};
 
 	/// A possible progression of a world. For example, the events leading up
@@ -46,7 +46,7 @@ namespace nullity {
 		/// Gets the reality this reality split off from. The source reality is actually
 		/// part of this reality, however it is not a possible outcome and is instead the
 		/// events leading up to the split.
-		virtual StackPtr<IReality>			GetSource() = 0;
+		virtual Ptr<IReality>			GetSource() = 0;
 
 	};
 
@@ -63,7 +63,7 @@ namespace nullity {
 
 		/// Spawns an entity in the frame, causing it to be created and added
 		/// to the world on the next update.
-		virtual void		SpawnEntity(StackPtr<IEntity>::Ref Entity) = 0;
+		virtual void		SpawnEntity(Ptr<IEntity> Entity) = 0;
 
 		/// Sets the flags for the visual appearence of the frame. These
 		/// flags should be from VisualFlags.
@@ -78,7 +78,7 @@ namespace nullity {
 	};
 
 	/// Creates a world.
-	StackPtr<IWorld>		CreateWorld();
+	Ptr<IWorld>		CreateWorld();
 
 }
 

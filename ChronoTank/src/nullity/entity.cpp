@@ -9,7 +9,7 @@ using namespace nullity;
 /*	Entity								*/
 /****************************************/
 //--
-StackPtr<IEntity> EntityClass::Create() {
+Ptr<IEntity> EntityClass::Create() {
 	return NULL;
 }
 
@@ -19,8 +19,8 @@ std::string EntityClass::GetName() {
 }
 
 //--
-StackPtr<IEntity> nullity::Clone(StackPtr<IEntity>::Ref Entity) {
-	StackPtr<IEntity> ent = Entity->GetClass()->Create();
+Ptr<IEntity> nullity::Clone(Ptr<IEntity> Entity) {
+	Ptr<IEntity> ent = Entity->GetClass()->Create();
 	Entity->Clone(ent);
 	return ent;
 }

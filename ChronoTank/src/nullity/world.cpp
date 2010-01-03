@@ -13,6 +13,6 @@ using namespace nullity;
 /*	World from engine					*/
 /****************************************/
 //--
-StackPtr<IWorld> nullity::CreateWorld() {
+Ptr<IWorld> nullity::CreateWorld() {
 	return new World();
 }

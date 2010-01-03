@@ -26,11 +26,11 @@ namespace nullity {
 		/// Destroys the entity visual pair.
 		void		Destroy();
 
-		/// Manages the visual aspects of the object.
+		/// Manages the visual aspects of the entity.
 		void		Manage(int Flags, const VisualParameters& Params);
 
-		/// Updates the pair.
-		void		Update(TimeStep Time, int Flags);
+		/// Updates the visual aspects of the entity.
+		void		Update(int Flags);
 	};
 
 	/// An implemented interface to a frame that uses World.
@@ -39,19 +39,19 @@ namespace nullity {
 		Frame();
 		
 		/// Creates a frame.
-		void		Init(TimeStep Time, StackPtr<Reality> Reality, bool Write);
+		void		Init(TimeStep Time, Ptr<Reality> Reality, bool Write);
 
 		/// Destroys the frame and its resources.
 		void		Destroy();
 
 		/// Directly adds an entity to the frame.
-		void		AddEntity(StackPtr<IEntity> Entity);
+		void		AddEntity(Ptr<IEntity> Entity);
 
 		/// Callback for when this frames reality is destroyed.
 		void		OnRealityDestroyed();
 
 		void		Update(TimeStep Time);
-		void		SpawnEntity(StackPtr<IEntity> Entity);
+		void		SpawnEntity(Ptr<IEntity> Entity);
 		void		SetVisualFlags(int Flags);
 		void		SetVisualParameters(VisualParameters Params);
 		void		RenderVisuals();
@@ -73,7 +73,7 @@ namespace nullity {
 
 		// Swaps the frame to another reality. Can only be called
 		// by the current reality.
-		void			_swap_reality(StackPtr<Reality> Reality);
+		void			_swap_reality(Ptr<Reality> Reality);
 
 		// Time the frame is in.
 		TimeStep		_time;

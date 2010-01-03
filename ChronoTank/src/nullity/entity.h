@@ -21,7 +21,7 @@ namespace nullity {
 
 		/// Copies all entity data to the target entity but does not 
 		/// insert the entity into any frames.
-		virtual void				Clone(StackPtr<IEntity>::Ref To) = 0;
+		virtual void				Clone(Ptr<IEntity> To) = 0;
 
 		/// Advances the entity by the specified amount of time. No interaction
 		/// with other entities should be done during this method.
@@ -29,7 +29,7 @@ namespace nullity {
 
 		/// Creates a visual for this entity or returns null if the entity cant be
 		/// visually represented.
-		virtual StackPtr<IVisual>	CreateVisual(VisualParameters Params) = 0;
+		virtual Ptr<IVisual>	CreateVisual(VisualParameters Params) = 0;
 
 		/// Gets the class of this entity.
 		virtual EntityClass*		GetClass() = 0;
@@ -44,12 +44,12 @@ namespace nullity {
 		virtual std::string				GetName();
 
 		/// Creates an instance of this class.
-		virtual StackPtr<IEntity>		Create();
+		virtual Ptr<IEntity>		Create();
 	};
 
 	/// Fully copies the specified entity but does not insert it into
 	/// a frame or reality.
-	StackPtr<IEntity>		Clone(StackPtr<IEntity>::Ref Entity);
+	Ptr<IEntity>		Clone(Ptr<IEntity> Entity);
 
 }
 

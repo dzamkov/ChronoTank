@@ -15,10 +15,12 @@ namespace nullity {
 	/// An implemented interface to a world.
 	class World : public IWorld {
 	public:
-		void		Init(StackPtr<IEntity> Root);
+		World();
 
-		StackPtr<IFrame>		GetOriginFrame();
-		StackPtr<IReality>		GetRootReality();
+		void		Init(Ptr<IEntity> Root);
+
+		Ptr<IFrame>		GetOriginFrame();
+		Ptr<IReality>	GetRootReality();
 
 	private:
 		Ptr<Reality>				_rootreality;

@@ -10,8 +10,9 @@ using namespace nullity;
 /*	Frame functions definitions     			*/
 /************************************************/
 //--
-EntityEx::EntityEx() : Entity(this), Visual(this) {
-
+EntityEx::EntityEx() {
+	this->Entity.SetOwner(this);
+	this->Visual.SetOwner(this);
 }
 
 //--
@@ -33,8 +34,7 @@ void EntityEx::Manage(int Flags, const VisualParameters& Params) {
 }
 
 //--
-void EntityEx::Update(TimeStep Time, int Flags) {
-	this->Entity->Update(Time);
+void EntityEx::Update(int Flags) {
 	if(this->Visual != NULL) {
 		this->Visual->Update(this->Entity);
 	}
@@ -42,12 +42,13 @@ void EntityEx::Update(TimeStep Time, int Flags) {
 
 //--
 Frame::Frame()
-: _reality(this), _world(this) 
 {
+	this->_reality.SetOwner(this);
+	this->_world.SetOwner(this);
 }
 
 //--
-void Frame::Init(TimeStep Time, StackPtr<Reality> Reality, bool Write) {
+void Frame::Init(TimeStep Time, Ptr<Reality> Reality, bool Write) {
 	this->_time = Time;
 	this->_reality = Reality;
 	this->_write = Write;
@@ -74,9 +75,15 @@ void Frame::Update(TimeStep Time) {
 	{
 		EntityEx* ent = (*it).second;
 		TimeStep utime = Time;
+		
+		Ptr<IEntity> oldent = ent->Entity;
+		Ptr<IEntity> newent = Clone(oldent);
+		newent->Update(utime);
+		ent->Entity = newent;
+		this->_reality->RecordState(uend, oldent, newent);
+
 		ent->Manage(this->_visflags, this->_visparams);
-		ent->Update(utime, this->_visflags);
-		this->_reality->RecordState(uend, ent->Entity);
+		ent->Update(this->_visflags);
 	}
 
 	// Status
@@ -84,16 +91,16 @@ void Frame::Update(TimeStep Time) {
 }
 
 //--
-void Frame::SpawnEntity(StackPtr<IEntity> Entity) {
-	this->_tasks.SpawnedEntities.push_back(ToPtr(this, Entity));
+void Frame::SpawnEntity(Ptr<IEntity> Entity) {
+	this->_tasks.SpawnedEntities.push_back(Ptr<IEntity>(this, Entity));
 }
 
 //--
-void Frame::AddEntity(StackPtr<IEntity> Entity) {
-	StackPtr<EntityEx> entex = new EntityEx(); 
+void Frame::AddEntity(Ptr<IEntity> Entity) {
+	Ptr<EntityEx> entex = new EntityEx(); 
 	entex->Entity = Entity;
 	entex->Manage(this->_visflags, this->_visparams);
-	this->_entities[ToPtr(this, Entity)] = ToPtr(this, entex);
+	this->_entities[Ptr<IEntity>(this, Entity)] = Ptr<EntityEx>(this, entex);
 }
 
 //--
@@ -112,7 +119,7 @@ void Frame::RenderVisuals() {
 		for(_entitymap::iterator it = this->_entities.begin();
 			it != this->_entities.end(); it++)
 		{
-			StackPtr<EntityEx> ent = (*it).second;
+			Ptr<EntityEx> ent = (*it).second;
 			if(!ent->Visual.IsNull()) {
 				ent->Visual->Render();
 			}
@@ -126,7 +133,7 @@ void Frame::OnRealityDestroyed() {
 }
 
 //--
-void Frame::_swap_reality(StackPtr<Reality> Reality) {
+void Frame::_swap_reality(Ptr<Reality> Reality) {
 	this->_reality = Reality;
 }
 
