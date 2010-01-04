@@ -4,16 +4,8 @@
 #include <assert.h>
 #include <map>
 
-/// Warning 4355 warns when 'this' is used in a
-/// initializer list. Since Ptr needs to be initialized
-/// with an owner during construction, using 'this' in
-/// the initializer list is required to properly setup a Ptr
-/// as an object member.
-#pragma warning(disable:4355)
-
 namespace nullity {
 	class IObject;
-	template <class Type> class Ptr;
 	template <class Type> class Ptr;
 
 	/// A generic representation of a logical object or system.
@@ -162,6 +154,11 @@ namespace nullity {
 	//--
 	template <class Type> Ptr<Type>::operator TypePtr() const {
 		return this->_ptr;
+	}
+
+	/// Casts a pointer to a different type that still derives from IObject.
+	template <class To, class From> Ptr<To> Cast(const Ptr<From>& Pointer) {
+		return (To*)((From*)Pointer);
 	}
 }
 

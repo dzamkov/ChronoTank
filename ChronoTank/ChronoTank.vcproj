@@ -228,14 +228,26 @@
 				</File>
 			</Filter>
 		</Filter>
-		<File
-			RelativePath=".\src\clockobj.cpp"
+		<Filter
+			Name="entities"
 			>
-		</File>
-		<File
-			RelativePath=".\src\clockobj.h"
-			>
-		</File>
+			<File
+				RelativePath=".\src\entities\clockent.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\entities\clockent.h"
+				>
+			</File>
+			<File
+				RelativePath=".\src\entities\vehicleent.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\entities\vehicleent.h"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath=".\src\game.cpp"
 			>
@@ -246,14 +258,6 @@
 		</File>
 		<File
 			RelativePath=".\src\main.cpp"
-			>
-		</File>
-		<File
-			RelativePath=".\src\vehicle.cpp"
-			>
-		</File>
-		<File
-			RelativePath=".\src\vehicle.h"
 			>
 		</File>
 	</Files>

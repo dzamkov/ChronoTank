@@ -29,7 +29,7 @@ namespace nullity {
 
 		/// Creates a visual for this entity or returns null if the entity cant be
 		/// visually represented.
-		virtual Ptr<IVisual>	CreateVisual(VisualParameters Params) = 0;
+		virtual Ptr<IVisual>		CreateVisual(VisualParameters Params) = 0;
 
 		/// Gets the class of this entity.
 		virtual EntityClass*		GetClass() = 0;

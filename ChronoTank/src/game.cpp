@@ -9,8 +9,9 @@
 #include "nullity/world.h"
 
 #include "game.h"
-#include "vehicle.h"
-#include "clockobj.h"
+
+#include "entities/vehicleent.h"
+#include "entities/clockent.h"
 
 using namespace nullity;
 using namespace ctank;

@@ -4,6 +4,7 @@
 #include <irrlicht.h>
 
 #include "nullity/object.h"
+#include "nullity/time.h"
 
 namespace ctank {
 	
