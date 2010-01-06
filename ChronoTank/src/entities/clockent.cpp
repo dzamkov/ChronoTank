@@ -21,7 +21,7 @@ class ClockEntityVisual : public IVisual {
 public:
 	ClockEntityVisual(VisualParameters Params);
 
-	void	Update(Ptr<IEntity> Entity);
+	void	Update(Ptr<Entity> Entity);
 	void	Render();
 
 private:
@@ -35,7 +35,7 @@ struct : public EntityClass {
 	std::string GetName() {
 		return "Clock";
 	}
-	Ptr<IEntity> Create() {
+	Ptr<Entity> Create() {
 		return new ClockEntity();
 	}
 } ClockEntityClass;
@@ -53,8 +53,8 @@ void ClockEntity::Update(TimeStep Time) {
 }
 
 //--
-void ClockEntity::Clone(Ptr<IEntity> To) {
-	IEntity* t = To;
+void ClockEntity::Clone(Ptr<Entity> To) {
+	Entity* t = To;
 	((ClockEntity*)t)->_time = this->_time;
 }
 
@@ -86,7 +86,7 @@ ClockEntityVisual::ClockEntityVisual(VisualParameters Params) {
 }
 
 //--
-void ClockEntityVisual::Update(Ptr<IEntity> Entity) {
+void ClockEntityVisual::Update(Ptr<Entity> Entity) {
 	this->_target = Cast<ClockEntity>(Entity);
 }
 

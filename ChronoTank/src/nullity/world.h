@@ -27,7 +27,7 @@ namespace nullity {
 
 		/// Initializes this world. The root entity will be created at
 		/// the origin frame.
-		virtual void				Init(Ptr<IEntity> Root) = 0;
+		virtual void				Init(Ptr<Entity> Root) = 0;
 
 		/// Gets the reality at the start of the world.
 		virtual Ptr<IReality>		GetRootReality() = 0;
@@ -63,7 +63,7 @@ namespace nullity {
 
 		/// Spawns an entity in the frame, causing it to be created and added
 		/// to the world on the next update.
-		virtual void		SpawnEntity(Ptr<IEntity> Entity) = 0;
+		virtual void		SpawnEntity(Ptr<Entity> Entity) = 0;
 
 		/// Sets the flags for the visual appearence of the frame. These
 		/// flags should be from VisualFlags.

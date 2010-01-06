@@ -76,8 +76,8 @@ void Frame::Update(TimeStep Time) {
 		EntityEx* ent = (*it).second;
 		TimeStep utime = Time;
 		
-		Ptr<IEntity> oldent = ent->Entity;
-		Ptr<IEntity> newent = Clone(oldent);
+		Ptr<Entity> oldent = ent->Entity;
+		Ptr<Entity> newent = Clone(oldent);
 		newent->Update(utime);
 		ent->Entity = newent;
 		this->_reality->RecordState(uend, oldent, newent);
@@ -91,16 +91,16 @@ void Frame::Update(TimeStep Time) {
 }
 
 //--
-void Frame::SpawnEntity(Ptr<IEntity> Entity) {
-	this->_tasks.SpawnedEntities.push_back(Ptr<IEntity>(this, Entity));
+void Frame::SpawnEntity(Ptr<Entity> Entity) {
+	this->_tasks.SpawnedEntities.push_back(Ptr<Entity>(this, Entity));
 }
 
 //--
-void Frame::AddEntity(Ptr<IEntity> Entity) {
+void Frame::AddEntity(Ptr<Entity> Entity) {
 	Ptr<EntityEx> entex = new EntityEx(); 
 	entex->Entity = Entity;
 	entex->Manage(this->_visflags, this->_visparams);
-	this->_entities[Ptr<IEntity>(this, Entity)] = Ptr<EntityEx>(this, entex);
+	this->_entities[Ptr<Entity>(this, Entity)] = Ptr<EntityEx>(this, entex);
 }
 
 //--
@@ -140,7 +140,7 @@ void Frame::_swap_reality(Ptr<Reality> Reality) {
 //--
 void Frame::_tasklist::PerformTasks(Frame* Frame) {
 	// Spawning
-	for(std::vector<Ptr<IEntity>>::iterator it = this->SpawnedEntities.begin();
+	for(std::vector<Ptr<Entity>>::iterator it = this->SpawnedEntities.begin();
 		it != this->SpawnedEntities.end(); it++)
 	{
 		Frame->AddEntity(*it);

@@ -42,7 +42,7 @@ namespace nullity {
 		/// Records the state change from the entities old state to the entities new state
 		/// at the given time. If the old state is null, the entity is created; likewise, if
 		/// the new state is null, it is destroyed.
-		void				RecordState(TimeStep Time, Ptr<IEntity> Old, Ptr<IEntity> New);
+		void				RecordState(TimeStep Time, Ptr<Entity> Old, Ptr<Entity> New);
 
 		/// Creates a read frame at the specified time.
 		void				Read(TimeStep Time, Ptr<Frame> ReadFrame);

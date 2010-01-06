@@ -5,63 +5,53 @@
 #include <set>
 
 #include "object.h"
+#include "interface.h"
 #include "time.h"
 
 namespace nullity {
 	class IVisual;
 	struct VisualParameters;
 
-	class IEntity;
-	class IDynamicEntity;
-	class IVisualEntity;
-	struct EntityClass;
+	class Entity;
+	class IEntityInterface;
 	
 	/// An object in a world that affects and 
 	/// interacts with other entities in the world.
-	class IEntity : public virtual IObject {
+	class Entity : public IObject {
 	public:
 
-		/// Copies all entity data to the target entity but does not 
-		/// insert the entity into any frames. The default of this 
-		virtual void				Clone(Ptr<IEntity> To);
+		void		Destroy();
 
-		/// Gets the class of this entity. More specifically, this is the class
-		/// that was used to create the entity or the interface that this entity
-		/// has.
-		virtual EntityClass*		GetClass() = 0;
+		/// Initializes this entity with an interface to act as its
+		/// main interface.
+		void		Init(IInterface* MainInterface);
 
-		/// Returns a map of availibe interfaces to this entity paired with
-		/// a pointer to the interface.
-		virtual std::map<EntityClass*, Ptr<IEntity>>	GetInterfaces();
+		/// Clones this entity.
+		Ptr<Entity>			Clone();
+
+		/// The main interface that defines the behavior of
+		/// this entity.
+		IInterface*			MainInterface;
+
+		/// The entity interface for this entity. This is the
+		/// base of main interface with the EntityInterface class.
+		IEntityInterface*	EntityInterface;
+
 	};
 
-	/// An interface to an entity which changes over time by itself.
-	class IDynamicEntity : public IEntity {
+	/// Interface for an entity. All interfaces that intend
+	/// to be the main interface of an entity must have this
+	/// as a base.
+	class IEntityInterface : public IInterface {
 	public:
+		static InterfaceClass*	Class;
 
-		/// Updates the entity by the specified time with no interaction among
-		/// other entities.
-		virtual void		Update(TimeStep Time) = 0;
-
-		EntityClass*		GetClass();
+		/// Copies this entity into a new entity preserving all
+		/// internal information about the entity while leaving out
+		/// usage information.
+		virtual Ptr<Entity>		Clone() = 0;
 
 	};
-
-	/// Represents a type of entity interface and provides methods to create an
-	/// instance of the class. If create returns null the entity is abstract and
-	/// can't be used directly.
-	struct EntityClass {
-
-		/// Gets the debug name for this class.
-		virtual std::string			GetName();
-
-		/// Creates an instance of this class.
-		virtual Ptr<IEntity>		Create();
-	};
-
-	/// Fully copies the specified entity but does not insert it into
-	/// a frame or reality.
-	Ptr<IEntity>		Clone(Ptr<IEntity> Entity);
 
 }
 

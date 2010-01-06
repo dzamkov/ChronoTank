@@ -20,7 +20,7 @@ namespace nullity {
 	struct EntityEx : public IObject {
 		EntityEx();
 
-		Ptr<IEntity>		Entity;
+		Ptr<Entity>		Entity;
 		Ptr<IVisual>		Visual;
 
 		/// Destroys the entity visual pair.
@@ -45,19 +45,19 @@ namespace nullity {
 		void		Destroy();
 
 		/// Directly adds an entity to the frame.
-		void		AddEntity(Ptr<IEntity> Entity);
+		void		AddEntity(Ptr<Entity> Entity);
 
 		/// Callback for when this frames reality is destroyed.
 		void		OnRealityDestroyed();
 
 		void		Update(TimeStep Time);
-		void		SpawnEntity(Ptr<IEntity> Entity);
+		void		SpawnEntity(Ptr<Entity> Entity);
 		void		SetVisualFlags(int Flags);
 		void		SetVisualParameters(VisualParameters Params);
 		void		RenderVisuals();
 
 	private:
-		typedef	std::map<Ptr<IEntity>, Ptr<EntityEx>>	_entitymap;
+		typedef	std::map<Ptr<Entity>, Ptr<EntityEx>>	_entitymap;
 
 		VisualParameters		_visparams;
 		int						_visflags;
@@ -65,7 +65,7 @@ namespace nullity {
 
 		// List of accumulated tasks for the frame.
 		struct _tasklist {
-			std::vector<Ptr<IEntity>>		SpawnedEntities;
+			std::vector<Ptr<Entity>>		SpawnedEntities;
 
 			// Performs tasks.
 			void	PerformTasks(Frame* Frame);

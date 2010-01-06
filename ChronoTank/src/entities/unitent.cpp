@@ -22,7 +22,7 @@ public:
 	PlayerTank();
 
 	void			Update(TimeStep Time);
-	void			Clone(Ptr<IEntity> To);
+	void			Clone(Ptr<Entity> To);
 	Ptr<IVisual>	CreateVisual(VisualParameters Params);
 	EntityClass*	GetClass();
 

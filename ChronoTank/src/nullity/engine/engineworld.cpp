@@ -16,7 +16,7 @@ World::World() {
 }
 
 //--
-void World::Init(Ptr<IEntity> Root) { 
+void World::Init(Ptr<Entity> Root) { 
 	this->_rootreality = new Reality();
 	this->_rootreality->Init(0.0f, new Frame());
 	this->_rootreality->GetWriteFrame()->SpawnEntity(Root);

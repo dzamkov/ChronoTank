@@ -1,6 +1,8 @@
 /************************************************/
 /*	Entity Implementation		     			*/
 /************************************************/
+#include <assert.h>
+
 #include "entity.h"
 
 using namespace nullity;
@@ -9,18 +11,21 @@ using namespace nullity;
 /*	Entity								*/
 /****************************************/
 //--
-Ptr<IEntity> EntityClass::Create() {
-	return NULL;
+INTERFACE_CLASS(IEntityInterface)
+
+//--
+void Entity::Init(IInterface* MainInterface) {
+	this->MainInterface = MainInterface;
+	this->EntityInterface = (IEntityInterface*)(this->MainInterface->GetBase(IEntityInterface::Class));
+	assert(this->EntityInterface != NULL);
 }
 
 //--
-std::string EntityClass::GetName() {
-	return "";
+void Entity::Destroy() {
+	delete this->MainInterface;
 }
 
 //--
-Ptr<IEntity> nullity::Clone(Ptr<IEntity> Entity) {
-	Ptr<IEntity> ent = Entity->GetClass()->Create();
-	Entity->Clone(ent);
-	return ent;
+Ptr<Entity> Entity::Clone() {
+	return this->EntityInterface->Clone();
 }

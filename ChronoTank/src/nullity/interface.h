@@ -9,6 +9,7 @@
 namespace nullity {
 	struct InterfaceClass;
 	class IInterface;
+	class Clonable;
 
 	/// Identifier of a type of interface that
 	/// is usually paired directly with a class that
@@ -58,16 +59,15 @@ namespace nullity {
 	};
 }
 
-/// Adds a static attribute Class to the IInterface
-/// that points to the class for the interface and also
-/// writes a GetClass method.
+/// Defines an interface class and sets the value of the static
+/// attribue Class to point to it. Also defines the GetClass method.
 #define INTERFACE_CLASS(name) \
 	static struct : public nullity::InterfaceClass { \
 		std::string GetName() { \
-			return name; \
+			return #name; \
 		} \
-	} _Class; \
-	static nullity::InterfaceClass* Class = &_Class; \
-	nullity::InterfaceClass* GetClass() { return Class; }
+	} _##name##Class; \
+	static nullity::InterfaceClass* name##Class = &_##name##Class; \
+	nullity::InterfaceClass* name##GetClass() { return name##Class; }
 
 #endif

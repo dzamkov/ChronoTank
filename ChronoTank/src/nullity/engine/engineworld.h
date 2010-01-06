@@ -17,7 +17,7 @@ namespace nullity {
 	public:
 		World();
 
-		void		Init(Ptr<IEntity> Root);
+		void		Init(Ptr<Entity> Root);
 
 		Ptr<IFrame>		GetOriginFrame();
 		Ptr<IReality>	GetRootReality();

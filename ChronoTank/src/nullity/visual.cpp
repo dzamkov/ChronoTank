@@ -33,7 +33,7 @@ VisualParameters VisualParameters::AsRootNode(irr::IrrlichtDevice* Device) {
 /*	Visual								*/
 /****************************************/
 //--
-void IVisual::Update(Ptr<IEntity> Entity) {
+void IVisual::Update(Ptr<Entity> Entity) {
 
 }
 
@@ -50,7 +50,7 @@ class LoadedVisual : public IVisual {
 public:
 	LoadedVisual(VisualParameters Params, io::IReadFile* File);
 
-	void	Update(Ptr<IEntity> Entity);
+	void	Update(Ptr<Entity> Entity);
 	void	Destroy();
 
 	scene::ISceneNode*		Node;
@@ -77,6 +77,6 @@ void LoadedVisual::Destroy() {
 }
 
 //--
-void LoadedVisual::Update(Ptr<IEntity> Entity) {
+void LoadedVisual::Update(Ptr<Entity> Entity) {
 
 }

@@ -7,12 +7,12 @@ namespace ctank {
 	using namespace nullity;
 
 	/// A debug entity for the purpose of showing time.
-	class ClockEntity : public IEntity {
+	class ClockEntity : public Entity {
 	public:
 		ClockEntity();
 
 		void			Update(TimeStep Time);
-		void			Clone(Ptr<IEntity> To);
+		void			Clone(Ptr<Entity> To);
 		Ptr<IVisual>	CreateVisual(VisualParameters Params);
 		EntityClass*	GetClass();
 

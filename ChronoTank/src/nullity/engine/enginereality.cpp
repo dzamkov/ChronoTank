@@ -52,7 +52,7 @@ void Reality::Init(TimeStep Origin, Ptr<Frame> WriteFrame) {
 // Bunch of crap left unimplemented until it's needed.
 
 //--
-void Reality::RecordState(TimeStep Time, Ptr<IEntity> Old, Ptr<IEntity> New) {
+void Reality::RecordState(TimeStep Time, Ptr<Entity> Old, Ptr<Entity> New) {
 	// Since none of the methods to access this data are implemented, we dont need to
 	// do anything.
 }
