@@ -168,6 +168,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\nullity\interface.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\nullity\interface.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\nullity\object.cpp"
 				>
 			</File>
@@ -240,11 +248,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\entities\vehicleent.cpp"
+				RelativePath=".\src\entities\unitent.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\src\entities\vehicleent.h"
+				RelativePath=".\src\entities\unitent.h"
 				>
 			</File>
 		</Filter>

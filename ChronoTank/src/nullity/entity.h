@@ -12,36 +12,48 @@ namespace nullity {
 	struct VisualParameters;
 
 	class IEntity;
+	class IDynamicEntity;
+	class IVisualEntity;
 	struct EntityClass;
 	
-	/// An object in a world that affects and interacts with other entities
-	/// in the world.
-	class IEntity : public IObject {
+	/// An object in a world that affects and 
+	/// interacts with other entities in the world.
+	class IEntity : public virtual IObject {
 	public:
 
 		/// Copies all entity data to the target entity but does not 
-		/// insert the entity into any frames.
-		virtual void				Clone(Ptr<IEntity> To) = 0;
+		/// insert the entity into any frames. The default of this 
+		virtual void				Clone(Ptr<IEntity> To);
 
-		/// Advances the entity by the specified amount of time. No interaction
-		/// with other entities should be done during this method.
-		virtual void				Update(TimeStep Time) = 0;
-
-		/// Creates a visual for this entity or returns null if the entity cant be
-		/// visually represented.
-		virtual Ptr<IVisual>		CreateVisual(VisualParameters Params) = 0;
-
-		/// Gets the class of this entity.
+		/// Gets the class of this entity. More specifically, this is the class
+		/// that was used to create the entity or the interface that this entity
+		/// has.
 		virtual EntityClass*		GetClass() = 0;
-		
+
+		/// Returns a map of availibe interfaces to this entity paired with
+		/// a pointer to the interface.
+		virtual std::map<EntityClass*, Ptr<IEntity>>	GetInterfaces();
 	};
 
-	/// Represents a type of entity and provides methods to create an
-	/// instance of the class.
+	/// An interface to an entity which changes over time by itself.
+	class IDynamicEntity : public IEntity {
+	public:
+
+		/// Updates the entity by the specified time with no interaction among
+		/// other entities.
+		virtual void		Update(TimeStep Time) = 0;
+
+		EntityClass*		GetClass();
+
+	};
+
+	/// Represents a type of entity interface and provides methods to create an
+	/// instance of the class. If create returns null the entity is abstract and
+	/// can't be used directly.
 	struct EntityClass {
 
 		/// Gets the debug name for this class.
-		virtual std::string				GetName();
+		virtual std::string			GetName();
 
 		/// Creates an instance of this class.
 		virtual Ptr<IEntity>		Create();

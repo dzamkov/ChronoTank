@@ -7,6 +7,7 @@
 #include "nullity/time.h"
 
 namespace ctank {
+	using namespace nullity;
 	
 	/// Top-level interface for an application.
 	class IGame : public irr::IEventReceiver {
@@ -16,7 +17,7 @@ namespace ctank {
 		virtual void		Init(irr::IrrlichtDevice* Device) = 0;
 
 		/// Called when the game must advance an amount of time.
-		virtual void		Update(nullity::TimeStep Time) = 0;
+		virtual void		Update(TimeStep Time) = 0;
 
 		/// Called when the game must be rendered.
 		virtual void		Render() = 0;

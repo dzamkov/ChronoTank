@@ -22,8 +22,10 @@ IObject::~IObject() {
 
 //--
 void IObject::Destroy() {
-	this->_flags = this->_flags | _flag_destroyed;
-	this->Deallocate();
+	if(!(this->_flags & _flag_destroyed)) {
+		this->_flags = this->_flags | _flag_destroyed;
+		this->Deallocate();
+	}
 }
 
 //--
