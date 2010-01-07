@@ -19,6 +19,13 @@ namespace nullity {
 
 		/// Gets a short debug name for the class.
 		virtual std::string		GetName() = 0;
+
+		/// Gets other interfaces that can be used to interact with the specified
+		/// interface. Base interfaces are expressed with the class of
+		/// the base interface paired with the pointer to IInterface that
+		/// corresponds to that class. The map does not need to express
+		/// bases of bases but can do so to resolve ambiguity.
+		virtual std::map<InterfaceClass*, IInterface*>		GetBases(IInterface* Interface);
 	};
 
 	/// Derived classes of this type hold a set of methods
@@ -45,29 +52,32 @@ namespace nullity {
 		/// the object.
 		IObject*			GetOwner();
 
-	protected:
-
-		/// Gets other interfaces that can be used to interact with this
-		/// interface. Base interfaces are expressed with the class of
-		/// the base interface paired with the pointer to IInterface that
-		/// corresponds to that class. The map does not need to express
-		/// bases of bases but can do so to resolve ambiguity.
-		virtual std::map<InterfaceClass*, IInterface*>		GetBases();
-
 	private:
 		IObject*		_owner;
 	};
 }
 
-/// Defines an interface class and sets the value of the static
-/// attribue Class to point to it. Also defines the GetClass method.
-#define INTERFACE_CLASS(name) \
-	static struct : public nullity::InterfaceClass { \
+/// This warning is raised when a class inherits a base class multiple times. When using interfaces,
+/// a single interface can implement other interfaces, leaving this as normal behavior.
+#pragma warning(disable:4584)
+
+/// Adds interface boilerplate to an interface class body.
+#define DECLARE_INTERFACE_CLASS(name) \
+	name(IObject* Owner); \
+	static nullity::InterfaceClass* Class; \
+	nullity::InterfaceClass* GetClass();
+
+
+/// Defines an interfaces class, construct and GetClass method for interfaces that
+/// store no data other than virtual functions.
+#define SIMPLE_INTERFACE_CLASS(name) \
+	struct : public nullity::InterfaceClass { \
 		std::string GetName() { \
 			return #name; \
 		} \
 	} _##name##Class; \
-	static nullity::InterfaceClass* name##Class = &_##name##Class; \
-	nullity::InterfaceClass* name##GetClass() { return name##Class; }
+	nullity::InterfaceClass* name##::Class = &_##name##Class; \
+	name##::##name##(IObject* Owner) : nullity::IInterface(Owner) { } \
+	nullity::InterfaceClass* name##::GetClass() { return name##::Class; } 
 
 #endif

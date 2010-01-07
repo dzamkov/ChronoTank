@@ -11,7 +11,9 @@ using namespace nullity;
 /*	Entity								*/
 /****************************************/
 //--
-INTERFACE_CLASS(IEntityInterface)
+SIMPLE_INTERFACE_CLASS(IEntityInterface)
+SIMPLE_INTERFACE_CLASS(IVisualEntity)
+SIMPLE_INTERFACE_CLASS(IDynamicEntity)
 
 //--
 void Entity::Init(IInterface* MainInterface) {
@@ -28,4 +30,9 @@ void Entity::Destroy() {
 //--
 Ptr<Entity> Entity::Clone() {
 	return this->EntityInterface->Clone();
+}
+
+//--
+Ptr<Entity> Clone(Ptr<Entity> Entity) {
+	return Entity->Clone();
 }

@@ -14,6 +14,7 @@ namespace nullity {
 
 	class Entity;
 	class IEntityInterface;
+	class IDynamicEntity;
 	
 	/// An object in a world that affects and 
 	/// interacts with other entities in the world.
@@ -44,14 +45,35 @@ namespace nullity {
 	/// as a base.
 	class IEntityInterface : public IInterface {
 	public:
-		static InterfaceClass*	Class;
+		DECLARE_INTERFACE_CLASS(IEntityInterface)
 
 		/// Copies this entity into a new entity preserving all
 		/// internal information about the entity while leaving out
 		/// usage information.
 		virtual Ptr<Entity>		Clone() = 0;
-
 	};
+
+	/// Interface to an entity that changes over time by itself.
+	class IDynamicEntity : public IInterface {
+	public:
+		DECLARE_INTERFACE_CLASS(IDynamicEntity)
+
+		/// Updates the entity by the specified amount of time
+		/// with no interaction with other entites.
+		virtual void		Update(TimeStep Time) = 0;
+	};
+
+	/// An entity for which a visual representation can be created.
+	class IVisualEntity : public IInterface {
+	public:
+		DECLARE_INTERFACE_CLASS(IVisualEntity)
+
+		/// Creates the visual for this entity.
+		virtual Ptr<IVisual>	CreateVisual(VisualParameters Params) = 0;
+	};
+
+	/// Clones an entity.
+	Ptr<Entity>		Clone(Ptr<Entity> Entity);
 
 }
 

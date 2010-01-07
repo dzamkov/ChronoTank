@@ -17,32 +17,52 @@ using namespace irr;
 /*	Clock Entity						*/
 /****************************************/
 //--
+SIMPLE_INTERFACE_CLASS(IClockEntity)
+
+//--
 class ClockEntityVisual : public IVisual {
 public:
 	ClockEntityVisual(VisualParameters Params);
 
-	void	Update(Ptr<Entity> Entity);
+	void	Update(IInterface* MainInterface);
 	void	Render();
 
 private:
-	Ptr<ClockEntity>	_target;
+	ClockEntity*		_target;
 	VisualParameters	_params;
 	gui::IGUIFont*		_font;
 };
 
 //--
-struct : public EntityClass {
+struct : public InterfaceClass {
 	std::string GetName() {
-		return "Clock";
+		return "ClockEntity";
 	}
-	Ptr<Entity> Create() {
-		return new ClockEntity();
+	std::map<InterfaceClass*, IInterface*> GetBases(IInterface* Interface) {
+		ClockEntity* ce = (ClockEntity*)Interface;
+		std::map<InterfaceClass*, IInterface*> map;
+		map[IClockEntity::Class] = (IClockEntity*)ce;
+		map[IVisualEntity::Class] = (IVisualEntity*)ce;
+		map[IDynamicEntity::Class] = (IDynamicEntity*)ce;
+		map[IEntityInterface::Class] = (IEntityInterface*)ce;
+		return map;
 	}
 } ClockEntityClass;
-EntityClass* ClockEntity::Class = &ClockEntityClass;
+InterfaceClass* ClockEntity::Class = &ClockEntityClass;
 
 //--
-ClockEntity::ClockEntity() {
+InterfaceClass* ClockEntity::GetClass() {
+	return ClockEntity::Class;
+}
+
+//--
+ClockEntity::ClockEntity(IObject* Owner) :
+IClockEntity(Owner), 
+IVisualEntity(Owner), 
+IDynamicEntity(Owner), 
+IEntityInterface(Owner),
+IInterface(Owner)
+{
 	
 
 }
@@ -53,19 +73,17 @@ void ClockEntity::Update(TimeStep Time) {
 }
 
 //--
-void ClockEntity::Clone(Ptr<Entity> To) {
-	Entity* t = To;
-	((ClockEntity*)t)->_time = this->_time;
+Ptr<Entity> ClockEntity::Clone() {
+	Ptr<Entity> e = new Entity();
+	ClockEntity* ce = new ClockEntity(e);
+	ce->_time = this->_time;
+	e->Init(ce);
+	return e;
 }
 
 //--
 Ptr<IVisual> ClockEntity::CreateVisual(VisualParameters Params) {
 	return new ClockEntityVisual(Params);
-}
-
-//--
-EntityClass* ClockEntity::GetClass() {
-	return ClockEntity::Class;
 }
 
 //--
@@ -82,12 +100,11 @@ void ClockEntity::SetTime(TimeStep Time) {
 ClockEntityVisual::ClockEntityVisual(VisualParameters Params) {
 	this->_params = Params;
 	this->_font = this->_params.Device->getGUIEnvironment()->getFont("Font/LucidaConsole10.png");
-	this->_target.SetOwner(this);
 }
 
 //--
-void ClockEntityVisual::Update(Ptr<Entity> Entity) {
-	this->_target = Cast<ClockEntity>(Entity);
+void ClockEntityVisual::Update(IInterface* MainInterface) {
+	this->_target = (ClockEntity*)MainInterface;
 }
 
 //--

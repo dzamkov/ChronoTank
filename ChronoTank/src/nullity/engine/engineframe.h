@@ -20,8 +20,13 @@ namespace nullity {
 	struct EntityEx : public IObject {
 		EntityEx();
 
-		Ptr<Entity>		Entity;
+		Ptr<Entity>			Ent;
 		Ptr<IVisual>		Visual;
+		IVisualEntity*		VisualInt;
+		IDynamicEntity*		DynamicInt;
+
+		/// Sets the entity this represents.
+		void		SetEntity(Ptr<Entity> Entity);
 
 		/// Destroys the entity visual pair.
 		void		Destroy();

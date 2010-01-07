@@ -5,26 +5,37 @@
 
 namespace ctank {
 	using namespace nullity;
-
-	/// A debug entity for the purpose of showing time.
-	class ClockEntity : public Entity {
+	
+	/// Interface to an entity that shows time.
+	class IClockEntity : public IInterface {
 	public:
-		ClockEntity();
+		DECLARE_INTERFACE_CLASS(IClockEntity)
+
+		/// Gets the time displayed.
+		virtual TimeStep		GetTime() = 0;
+
+		/// Sets the time the clock should show.
+		virtual void			SetTime(TimeStep Time) = 0;
+	};
+
+	/// Implemented clock entity that displays time in MMM:SS:III format
+	/// directly on the screen at its location.
+	class ClockEntity : public IInterface, 
+		public IClockEntity, 
+		public IVisualEntity, 
+		public IDynamicEntity, 
+		public IEntityInterface {
+	public:
+		ClockEntity(IObject* Owner);
+		static InterfaceClass*	Class;
+		InterfaceClass*			GetClass();
 
 		void			Update(TimeStep Time);
-		void			Clone(Ptr<Entity> To);
+		Ptr<Entity>		Clone();
 		Ptr<IVisual>	CreateVisual(VisualParameters Params);
-		EntityClass*	GetClass();
 
-		/// The class for clock entities.
-		static EntityClass*		Class;
-
-		/// Gets the time the clock displays.
-		TimeStep				GetTime();
-
-		/// Sets the time the clock should display and continue
-		/// the normal behavior of the clock.
-		void					SetTime(TimeStep Time);
+		TimeStep		GetTime();
+		void			SetTime(TimeStep Time);
 
 	private:
 		TimeStep	_time;

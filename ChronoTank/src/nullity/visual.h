@@ -32,8 +32,8 @@ namespace nullity {
 	public:
 		virtual ~IVisual() { }
 
-		/// Updates the visual to render the specified entity in its given state.
-		virtual void			Update(Ptr<Entity> Entity);
+		/// Updates the visual to render the entity with the specified interface.
+		virtual void			Update(IInterface* MainInterface);
 			
 		/// Renders the visual. This will be called after the scene manager
 		/// renders.

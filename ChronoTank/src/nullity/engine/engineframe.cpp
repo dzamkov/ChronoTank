@@ -11,8 +11,16 @@ using namespace nullity;
 /************************************************/
 //--
 EntityEx::EntityEx() {
-	this->Entity.SetOwner(this);
+	this->Ent.SetOwner(this);
 	this->Visual.SetOwner(this);
+}
+
+//--
+void EntityEx::SetEntity(Ptr<Entity> E) {
+	this->Ent = E;
+	IInterface* main = this->Ent->MainInterface;
+	this->DynamicInt = (IDynamicEntity*)main->GetBase(IDynamicEntity::Class);
+	this->VisualInt = (IVisualEntity*)main->GetBase(IVisualEntity::Class);
 }
 
 //--
@@ -22,21 +30,23 @@ void EntityEx::Destroy() {
 
 //--
 void EntityEx::Manage(int Flags, const VisualParameters& Params) {
-	if(!this->Visual.IsNull()) {
-		if(Flags & VisualFlagFullDelete) {
-			this->Visual.MakeNull();
-		}
-	} else {
-		if(Flags & VisualFlagAllowCreation) {
-			this->Visual = this->Entity->CreateVisual(Params);
+	if(this->VisualInt != NULL) {
+		if(!this->Visual.IsNull()) {
+			if(Flags & VisualFlagFullDelete) {
+				this->Visual.MakeNull();
+			}
+		} else {
+			if(Flags & VisualFlagAllowCreation) {
+				this->Visual = this->VisualInt->CreateVisual(Params);
+			}
 		}
 	}
 }
 
 //--
 void EntityEx::Update(int Flags) {
-	if(this->Visual != NULL) {
-		this->Visual->Update(this->Entity);
+	if(!this->Visual.IsNull()) {
+		this->Visual->Update(this->Ent->MainInterface);
 	}
 }
 
@@ -76,10 +86,10 @@ void Frame::Update(TimeStep Time) {
 		EntityEx* ent = (*it).second;
 		TimeStep utime = Time;
 		
-		Ptr<Entity> oldent = ent->Entity;
+		Ptr<Entity> oldent = ent->Ent;
 		Ptr<Entity> newent = Clone(oldent);
-		newent->Update(utime);
-		ent->Entity = newent;
+		ent->SetEntity(newent);
+		ent->DynamicInt->Update(utime);
 		this->_reality->RecordState(uend, oldent, newent);
 
 		ent->Manage(this->_visflags, this->_visparams);
@@ -91,16 +101,16 @@ void Frame::Update(TimeStep Time) {
 }
 
 //--
-void Frame::SpawnEntity(Ptr<Entity> Entity) {
-	this->_tasks.SpawnedEntities.push_back(Ptr<Entity>(this, Entity));
+void Frame::SpawnEntity(Ptr<Entity> E) {
+	this->_tasks.SpawnedEntities.push_back(Ptr<Entity>(this, E));
 }
 
 //--
-void Frame::AddEntity(Ptr<Entity> Entity) {
+void Frame::AddEntity(Ptr<Entity> E) {
 	Ptr<EntityEx> entex = new EntityEx(); 
-	entex->Entity = Entity;
+	entex->SetEntity(E);
 	entex->Manage(this->_visflags, this->_visparams);
-	this->_entities[Ptr<Entity>(this, Entity)] = Ptr<EntityEx>(this, entex);
+	this->_entities[Ptr<Entity>(this, E)] = Ptr<EntityEx>(this, entex);
 }
 
 //--

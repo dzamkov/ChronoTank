@@ -15,7 +15,7 @@ IInterface::IInterface(IObject* Owner) {
 
 //--
 IInterface* IInterface::GetBase(InterfaceClass* Class) {
-	std::map<InterfaceClass*, IInterface*> map = this->GetBases();
+	std::map<InterfaceClass*, IInterface*> map = this->GetClass()->GetBases(this);
 	std::map<InterfaceClass*, IInterface*>::iterator it = map.find(Class);
 	if(it != map.end()) {
 		// Direct base found.
@@ -38,6 +38,6 @@ IObject* IInterface::GetOwner() {
 }
 
 //--
-std::map<InterfaceClass*, IInterface*> IInterface::GetBases() {
+std::map<InterfaceClass*, IInterface*> InterfaceClass::GetBases(IInterface* Interface) {
 	return std::map<InterfaceClass*, IInterface*>();
 }
