@@ -8,19 +8,19 @@ namespace ctank {
 
 	/// An individual player-controllable entity that affects
 	/// other units and entities.
-	class IUnit : public Entity {
+	class IUnit : public IInterface {
 	public:
+		DECLARE_INTERFACE_CLASS(IUnit)
 
 		/// Turns the unit the specified velocity between -1.0f and 1.0f.
 		virtual void		Turn(float Amount) = 0;
 
 		/// Moves the unit foward by the specified velocity between -1.0f and 1.0f.
 		virtual void		Move(float Amount) = 0;
-
 	};
 
-	/// Class for player tanks, a simple unit for testing purposes.
-	EntityClass*		PlayerTankClass;
+	/// Creates a simple player-controllable tank.
+	Ptr<Entity>		CreatePlayerTank();
 
 }
 

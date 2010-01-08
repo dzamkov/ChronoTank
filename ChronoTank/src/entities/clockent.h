@@ -26,9 +26,7 @@ namespace ctank {
 		public IDynamicEntity, 
 		public IEntityInterface {
 	public:
-		ClockEntity(IObject* Owner);
-		static InterfaceClass*	Class;
-		InterfaceClass*			GetClass();
+		DECLARE_INTERFACE_CLASS(ClockEntity)
 
 		void			Update(TimeStep Time);
 		Ptr<Entity>		Clone();

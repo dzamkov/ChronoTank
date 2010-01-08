@@ -10,7 +10,7 @@
 
 #include "game.h"
 
-#include "entities/vehicleent.h"
+#include "entities/unitent.h"
 #include "entities/clockent.h"
 
 using namespace nullity;
@@ -18,29 +18,44 @@ using namespace ctank;
 using namespace irr;
 
 /****************************************/
-/*	Game object							*/
+/*	Game Entity							*/
 /****************************************/
 //--
-class GameObj : public IObject {
+class GameEntity :
+	public IEntityInterface,
+	public IDynamicEntity,
+	public IInterface {
 public:
-	void	Init();
-	void	Update(TimeStep Time);
-	void	Destroy();
+	DECLARE_INTERFACE_CLASS(GameEntity)
 
-	IObject*	Clone();
+	void			Update(TimeStep Time);
+	Ptr<Entity>		Clone();
 
-	bool		ObjsCreated;
-	IVehicle*	Tank;
+	bool			ObjsCreated;
+	Ptr<Entity>		Tank;
 };
 
 //--
-void GameObj::Init() {
+BEGIN_INTERFACE_CLASS
+	INTERFACE_CLASS_NAME(GameEntity)
+	BEGIN_INTERFACE_CLASS_BASES(GameEntity)
+		INTERFACE_CLASS_BASE(IEntityInterface)
+		INTERFACE_CLASS_BASE(IDynamicEntity)
+	END_INTERFACE_CLASS_BASES
+END_INTERFACE_CLASS(GameEntity)
+
+//--
+GameEntity::GameEntity(IObject* Owner) :
+IEntityInterface(Owner),
+IDynamicEntity(Owner),
+IInterface(Owner)
+{
 	this->ObjsCreated = false;
-	this->Tank = NULL;
+	this->Tank.SetOwner(Owner);
 }
 
 //--
-void GameObj::Update(TimeStep Time) {
+void GameEntity::Update(TimeStep Time) {
 	if(!this->ObjsCreated) {
 		this->ObjsCreated = true;
 		IFrame* frame = this->GetFrame();
@@ -50,7 +65,7 @@ void GameObj::Update(TimeStep Time) {
 		frame->SpawnObject(this->Tank);
 
 		// Clocks
-		IClockObject* clock;
+		Ptr<ClockEntity> clock;
 		clock = CreateClockObject();
 		clock->SetPosition(Vector(-2.0f, 0.0f, 3.5f));
 		frame->SpawnObject(clock);
@@ -62,16 +77,12 @@ void GameObj::Update(TimeStep Time) {
 }
 
 //--
-void GameObj::Destroy() {
-	IObject::Destroy();
-}
-
-//--
-IObject* GameObj::Clone() {
-	GameObj* go = new GameObj();
-	go->ObjsCreated = this->ObjsCreated;
-	go->Tank = this->Tank;
-	return go;
+Ptr<Entity> GameEntity::Clone() {
+	Ptr<Entity> e = new Entity();
+	GameEntity* ge = new GameEntity(ge);
+	e->Init(ge);
+	ge->ObjsCreated = this->ObjsCreated;
+	ge->Tank = this->Tank;
 }
 
 /****************************************/
@@ -98,8 +109,6 @@ private:
 
 	IWorld*			_world;
 	IFrame*			_frame;
-
-	GameObj*		_gameobj;
 
 	TimeStep			_timerate;
 	TimeStep			_curtimerate;
@@ -179,17 +188,6 @@ void GameDef::Destroy() {
 bool GameDef::OnEvent(const SEvent& Event) {
 	if(Event.EventType == EET_KEY_INPUT_EVENT) {
 		const SEvent::SKeyInput& kevent = Event.KeyInput;
-		IVehicle* tank = this->_gameobj->Tank;
-		if(tank != NULL) {
-			if(kevent.Key == KEY_KEY_W && kevent.PressedDown) tank->SetVehicleControl(VehicleControlFoward, 1.0f);
-			if(kevent.Key == KEY_KEY_W && !kevent.PressedDown) tank->SetVehicleControl(VehicleControlFoward, 0.0f);
-			if(kevent.Key == KEY_KEY_S && kevent.PressedDown) tank->SetVehicleControl(VehicleControlFoward, -1.0f);
-			if(kevent.Key == KEY_KEY_S && !kevent.PressedDown) tank->SetVehicleControl(VehicleControlFoward, 0.0f);
-			if(kevent.Key == KEY_KEY_A && kevent.PressedDown) tank->SetVehicleControl(VehicleControlTurn, -1.0f);
-			if(kevent.Key == KEY_KEY_A && !kevent.PressedDown) tank->SetVehicleControl(VehicleControlTurn, 0.0f);
-			if(kevent.Key == KEY_KEY_D && kevent.PressedDown) tank->SetVehicleControl(VehicleControlTurn, 1.0f);
-			if(kevent.Key == KEY_KEY_D && !kevent.PressedDown) tank->SetVehicleControl(VehicleControlTurn, 0.0f);
-		}
 
 		if(kevent.Key == KEY_KEY_Q && kevent.PressedDown) this->_timerate = 3.0f;
 		if(kevent.Key == KEY_KEY_Q && !kevent.PressedDown) this->_timerate = 1.0f;

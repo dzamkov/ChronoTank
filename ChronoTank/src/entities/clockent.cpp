@@ -34,26 +34,15 @@ private:
 };
 
 //--
-struct : public InterfaceClass {
-	std::string GetName() {
-		return "ClockEntity";
-	}
-	std::map<InterfaceClass*, IInterface*> GetBases(IInterface* Interface) {
-		ClockEntity* ce = (ClockEntity*)Interface;
-		std::map<InterfaceClass*, IInterface*> map;
-		map[IClockEntity::Class] = (IClockEntity*)ce;
-		map[IVisualEntity::Class] = (IVisualEntity*)ce;
-		map[IDynamicEntity::Class] = (IDynamicEntity*)ce;
-		map[IEntityInterface::Class] = (IEntityInterface*)ce;
-		return map;
-	}
-} ClockEntityClass;
-InterfaceClass* ClockEntity::Class = &ClockEntityClass;
-
-//--
-InterfaceClass* ClockEntity::GetClass() {
-	return ClockEntity::Class;
-}
+BEGIN_INTERFACE_CLASS
+	INTERFACE_CLASS_NAME(ClockEntity)
+	BEGIN_INTERFACE_CLASS_BASES(ClockEntity)
+		INTERFACE_CLASS_BASE(IClockEntity)
+		INTERFACE_CLASS_BASE(IVisualEntity)
+		INTERFACE_CLASS_BASE(IDynamicEntity)
+		INTERFACE_CLASS_BASE(IEntityInterface)
+	END_INTERFACE_CLASS_BASES
+END_INTERFACE_CLASS(ClockEntity)
 
 //--
 ClockEntity::ClockEntity(IObject* Owner) :

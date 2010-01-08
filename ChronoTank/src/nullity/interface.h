@@ -80,4 +80,36 @@ namespace nullity {
 	name##::##name##(IObject* Owner) : nullity::IInterface(Owner) { } \
 	nullity::InterfaceClass* name##::GetClass() { return name##::Class; } 
 
+/// Begins the definition of a more complicated interface class.
+#define BEGIN_INTERFACE_CLASS \
+	struct : public nullity::InterfaceClass {
+
+/// Sets the name of the class.
+#define INTERFACE_CLASS_NAME(name) \
+	std::string GetName() { \
+		return #name; \
+	}
+
+/// Begins the definition of class bases.
+#define BEGIN_INTERFACE_CLASS_BASES(name) \
+	std::map<InterfaceClass*, IInterface*> GetBases(IInterface* Interface) { \
+		name##* c = (##name##*)Interface; \
+		std::map<InterfaceClass*, IInterface*> map;
+
+/// Adds a base to the class.
+#define INTERFACE_CLASS_BASE(name) \
+	map[##name##::Class] = (##name##*)c;
+
+/// Closes BEGIN_INTERFACE_CLASS_BASES
+#define END_INTERFACE_CLASS_BASES \
+		return map; \
+	}
+
+/// Closes BEGIN_INTERFACE_CLASS with the specified class.
+#define END_INTERFACE_CLASS(name) \
+	} _##name##Class; \
+	nullity::InterfaceClass* name##::Class = &_##name##Class; \
+	nullity::InterfaceClass* name##::GetClass() { return name##::Class; } 
+
+
 #endif
