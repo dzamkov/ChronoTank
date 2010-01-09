@@ -55,6 +55,20 @@ namespace nullity {
 	private:
 		IObject*		_owner;
 	};
+
+	/// Wraps an interface as an object. The object paired with the interface is 
+	/// returned while the value of Interface is changed to the initialized interface
+	/// if not previously null. This only works on interfaces with a constructor whose
+	/// only parameter is the owner object.
+	template <class InterfaceType> Ptr<IObject> Wrap(InterfaceType** Interface) {
+		class WrappedInterface : public IObject, public InterfaceType {
+			WrappedInterface() : InterfaceType((IObject*)this) { }
+			void Deallocate() { delete this; }
+		};
+		WrappedInterface* wi = new WrappedInterface();
+		*Interface = (InterfaceType*)wi;
+		return wi;
+	}
 }
 
 /// This warning is raised when a class inherits a base class multiple times. When using interfaces,
