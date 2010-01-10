@@ -18,7 +18,7 @@ EntityEx::EntityEx() {
 //--
 void EntityEx::SetEntity(Ptr<Entity> E) {
 	this->Ent = E;
-	IInterface* main = this->Ent->MainInterface;
+	Interface* main = this->Ent->MainInterface;
 	this->DynamicInt = (IDynamicEntity*)main->GetBase(IDynamicEntity::Class);
 	this->VisualInt = (IVisualEntity*)main->GetBase(IVisualEntity::Class);
 }
@@ -86,11 +86,17 @@ void Frame::Update(TimeStep Time) {
 		EntityEx* ent = (*it).second;
 		TimeStep utime = Time;
 		
-		Ptr<Entity> oldent = ent->Ent;
-		Ptr<Entity> newent = Clone(oldent);
-		ent->SetEntity(newent);
-		ent->DynamicInt->Update(utime);
-		this->_reality->RecordState(uend, oldent, newent);
+		if(this->_write) {
+			Ptr<Entity> oldent = ent->Ent;
+			Ptr<Entity> newent = oldent->Clone();
+			ent->SetEntity(newent);
+			ent->DynamicInt->Update(utime);
+			ent->DynamicInt->FrameInteract(this);
+			this->_reality->RecordState(uend, oldent, newent);
+		} else {
+			ent->DynamicInt->Update(utime);
+			ent->DynamicInt->FrameInteract(this);
+		}
 
 		ent->Manage(this->_visflags, this->_visparams);
 		ent->Update(this->_visflags);
@@ -155,4 +161,5 @@ void Frame::_tasklist::PerformTasks(Frame* Frame) {
 	{
 		Frame->AddEntity(*it);
 	}
+	this->SpawnedEntities.clear();
 }

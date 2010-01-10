@@ -7,7 +7,7 @@ namespace ctank {
 	using namespace nullity;
 	
 	/// Interface to an entity that shows time.
-	class IClockEntity : public IInterface {
+	class IClockEntity : public Interface {
 	public:
 		DECLARE_INTERFACE_CLASS(IClockEntity)
 
@@ -20,7 +20,7 @@ namespace ctank {
 
 	/// Implemented clock entity that displays time in MMM:SS:III format
 	/// directly on the screen at its location.
-	class ClockEntity : public IInterface, 
+	class ClockEntity : public Interface, 
 		public IClockEntity, 
 		public IVisualEntity, 
 		public IDynamicEntity, 

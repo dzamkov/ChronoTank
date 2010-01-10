@@ -21,14 +21,13 @@ using namespace irr;
 /*	Game Entity							*/
 /****************************************/
 //--
-class GameEntity :
+class GameEntity : public Interface,
 	public IEntityInterface,
-	public IDynamicEntity,
-	public IInterface {
+	public IDynamicEntity {
 public:
 	DECLARE_INTERFACE_CLASS(GameEntity)
 
-	void			Update(TimeStep Time);
+	void			FrameInteract(Ptr<IFrame> Frame);
 	Ptr<Entity>		Clone();
 
 	bool			ObjsCreated;
@@ -36,7 +35,7 @@ public:
 };
 
 //--
-BEGIN_INTERFACE_CLASS
+BEGIN_INTERFACE_CLASS(GameEntity)
 	INTERFACE_CLASS_NAME(GameEntity)
 	BEGIN_INTERFACE_CLASS_BASES(GameEntity)
 		INTERFACE_CLASS_BASE(IEntityInterface)
@@ -45,44 +44,39 @@ BEGIN_INTERFACE_CLASS
 END_INTERFACE_CLASS(GameEntity)
 
 //--
-GameEntity::GameEntity(IObject* Owner) :
+GameEntity::GameEntity(Ptr<IObject> Owner) :
 IEntityInterface(Owner),
 IDynamicEntity(Owner),
-IInterface(Owner)
+Interface(GameEntity::Class, Owner)
 {
 	this->ObjsCreated = false;
 	this->Tank.SetOwner(Owner);
 }
 
 //--
-void GameEntity::Update(TimeStep Time) {
+void GameEntity::FrameInteract(Ptr<IFrame> Frame) {
 	if(!this->ObjsCreated) {
 		this->ObjsCreated = true;
-		IFrame* frame = this->GetFrame();
 
 		// Player tank
 		this->Tank = CreatePlayerTank();
-		frame->SpawnObject(this->Tank);
+		Frame->SpawnEntity(this->Tank);
 
 		// Clocks
-		Ptr<ClockEntity> clock;
-		clock = CreateClockObject();
-		clock->SetPosition(Vector(-2.0f, 0.0f, 3.5f));
-		frame->SpawnObject(clock);
-
-		clock = CreateClockObject();
-		clock->SetPosition(Vector(2.0f, 0.0f, -3.5f));
-		frame->SpawnObject(clock);
+		Ptr<Entity> clock = new Entity();
+		clock->Init(new ClockEntity(Ptr<IObject>(clock)));
+		Frame->SpawnEntity(clock);
 	}
 }
 
 //--
 Ptr<Entity> GameEntity::Clone() {
 	Ptr<Entity> e = new Entity();
-	GameEntity* ge = new GameEntity(ge);
+	GameEntity* ge = new GameEntity(Ptr<IObject>(e));
 	e->Init(ge);
 	ge->ObjsCreated = this->ObjsCreated;
 	ge->Tank = this->Tank;
+	return e;
 }
 
 /****************************************/
@@ -107,8 +101,8 @@ private:
 
 	std::string		_maindir;
 
-	IWorld*			_world;
-	IFrame*			_frame;
+	Ptr<IWorld>			_world;
+	Ptr<IFrame>			_frame;
 
 	TimeStep			_timerate;
 	TimeStep			_curtimerate;
@@ -138,10 +132,10 @@ void GameDef::Init(irr::IrrlichtDevice* Device) {
 	this->_smgr->loadScene("Default.irr");
 
 	// World
-	this->_gameobj = new GameObj();
-	this->_gameobj->Init();
+	Ptr<Entity> ge = new Entity();
+	ge->Init(new GameEntity(Ptr<IObject>(ge)));
 	this->_world = CreateWorld();
-	this->_world->Init(this->_gameobj);
+	this->_world->Init(ge);
 	this->_frame = this->_world->GetOriginFrame();
 
 	// Visuals for frame
@@ -181,7 +175,6 @@ void GameDef::Render() {
 
 //--
 void GameDef::Destroy() {
-	this->_world->Destroy();
 }
 
 //--

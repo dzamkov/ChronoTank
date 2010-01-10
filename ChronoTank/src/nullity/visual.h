@@ -33,7 +33,7 @@ namespace nullity {
 		virtual ~IVisual() { }
 
 		/// Updates the visual to render the entity with the specified interface.
-		virtual void			Update(IInterface* MainInterface);
+		virtual void			Update(Interface* MainInterface);
 			
 		/// Renders the visual. This will be called after the scene manager
 		/// renders.

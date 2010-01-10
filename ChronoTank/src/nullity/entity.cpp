@@ -16,7 +16,7 @@ SIMPLE_INTERFACE_CLASS(IVisualEntity)
 SIMPLE_INTERFACE_CLASS(IDynamicEntity)
 
 //--
-void Entity::Init(IInterface* MainInterface) {
+void Entity::Init(Interface* MainInterface) {
 	this->MainInterface = MainInterface;
 	this->EntityInterface = (IEntityInterface*)(this->MainInterface->GetBase(IEntityInterface::Class));
 	assert(this->EntityInterface != NULL);
@@ -35,4 +35,14 @@ Ptr<Entity> Entity::Clone() {
 //--
 Ptr<Entity> Clone(Ptr<Entity> Entity) {
 	return Entity->Clone();
+}
+
+//--
+void IDynamicEntity::Update(TimeStep Time) {
+
+}
+
+//--
+void IDynamicEntity::FrameInteract(Ptr<IFrame> Frame) {
+
 }

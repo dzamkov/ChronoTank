@@ -13,6 +13,7 @@ using namespace nullity;
 //--
 IObject::IObject() {
 	this->_flags = _flag_none;
+	this->_refs = 0;
 }
 
 //--

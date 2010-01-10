@@ -20,16 +20,14 @@ using namespace irr;
 SIMPLE_INTERFACE_CLASS(IUnit);
 
 //--
-class PlayerTank : 
+class PlayerTank : public Interface,
 	public IUnit,
 	public IEntityInterface,
 	public IDynamicEntity,
-	public IVisualEntity, 
-	public IInterface {
+	public IVisualEntity {
 public:
 	DECLARE_INTERFACE_CLASS(PlayerTank)
 
-	void			Update(TimeStep Time);
 	Ptr<Entity>		Clone();
 	Ptr<IVisual>	CreateVisual(VisualParameters Params);
 
@@ -38,7 +36,7 @@ public:
 };
 
 //--
-BEGIN_INTERFACE_CLASS
+BEGIN_INTERFACE_CLASS(PlayerTank)
 	INTERFACE_CLASS_NAME(PlayerTank)
 	BEGIN_INTERFACE_CLASS_BASES(PlayerTank)
 		INTERFACE_CLASS_BASE(IUnit)
@@ -51,25 +49,25 @@ END_INTERFACE_CLASS(PlayerTank)
 //--
 Ptr<Entity> ctank::CreatePlayerTank() {
 	Ptr<Entity> e = new Entity();
-	PlayerTank* pt = new PlayerTank(e);
+	PlayerTank* pt = new PlayerTank(Ptr<IObject>(e));
 	e->Init(pt);
 	return e;
 }
 
 //--
-PlayerTank::PlayerTank(IObject* Owner) : 
+PlayerTank::PlayerTank(Ptr<IObject> Owner) : 
 IUnit(Owner), 
 IVisualEntity(Owner), 
 IDynamicEntity(Owner), 
 IEntityInterface(Owner), 
-IInterface(Owner) 
+Interface(PlayerTank::Class, Owner) 
 {
 }
 
 //--
 Ptr<Entity> PlayerTank::Clone() {
 	Ptr<Entity> e = new Entity();
-	PlayerTank* pt = new PlayerTank(e);
+	PlayerTank* pt = new PlayerTank(Ptr<IObject>(e));
 	e->Init(pt);
 	return e;
 }

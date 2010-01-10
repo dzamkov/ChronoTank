@@ -57,6 +57,7 @@ namespace nullity {
 	public:
 		Ptr();
 		Ptr(const TypePtr& Target);
+		Ptr(const Ptr& Other);
 		Ptr(IObject* Owner, const TypePtr& Target);
 		~Ptr();
 
@@ -67,11 +68,12 @@ namespace nullity {
 		/// must be destroyed as a result of its owner being destroyed.
 		void	SetOwner(IObject* Owner);
 
-		bool					IsNull() const;
-		void					MakeNull();
-		TypePtr operator		=(const TypePtr& Other);
-		TypePtr operator		->() const;
-		operator				TypePtr() const;
+		bool						IsNull() const;
+		void						MakeNull();
+		TypePtr operator			=(const TypePtr& Other);
+		const Ptr& operator			=(const Ptr& Other);
+		TypePtr operator			->() const;
+		operator					TypePtr() const;
 	};
 
 	//--
@@ -95,6 +97,13 @@ namespace nullity {
 		this->_owner = NULL;
 		this->_ptr = Target;
 		this->_incref();
+	}
+
+	//--
+	template <class Type> Ptr<Type>::Ptr(const Ptr<Type>& Other) {
+		this->_owner = NULL;
+		this->_target = NULL;
+		this->SetTarget(Other._ptr);
 	}
 
 	//--
@@ -143,6 +152,12 @@ namespace nullity {
 	//--
 	template <class Type> Type* Ptr<Type>::operator =(const TypePtr& Other) {
 		this->SetTarget(Other);
+		return Other;
+	}
+
+	//--
+	template <class Type> const Ptr<Type>& Ptr<Type>::operator =(const Ptr<Type>& Other) {
+		this->SetTarget(Other._ptr);
 		return Other;
 	}
 

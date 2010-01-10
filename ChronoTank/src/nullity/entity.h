@@ -10,6 +10,7 @@
 
 namespace nullity {
 	class IVisual;
+	class IFrame;
 	struct VisualParameters;
 
 	class Entity;
@@ -25,14 +26,14 @@ namespace nullity {
 
 		/// Initializes this entity with an interface to act as its
 		/// main interface.
-		void		Init(IInterface* MainInterface);
+		void		Init(Interface* MainInterface);
 
 		/// Clones this entity.
 		Ptr<Entity>			Clone();
 
 		/// The main interface that defines the behavior of
 		/// this entity.
-		IInterface*			MainInterface;
+		Interface*			MainInterface;
 
 		/// The entity interface for this entity. This is the
 		/// base of main interface with the EntityInterface class.
@@ -43,7 +44,7 @@ namespace nullity {
 	/// Interface for an entity. All interfaces that intend
 	/// to be the main interface of an entity must have this
 	/// as a base.
-	class IEntityInterface : public IInterface {
+	class IEntityInterface : public Interface {
 	public:
 		DECLARE_INTERFACE_CLASS(IEntityInterface)
 
@@ -54,17 +55,21 @@ namespace nullity {
 	};
 
 	/// Interface to an entity that changes over time by itself.
-	class IDynamicEntity : public IInterface {
+	class IDynamicEntity : public Interface {
 	public:
 		DECLARE_INTERFACE_CLASS(IDynamicEntity)
 
 		/// Updates the entity by the specified amount of time
 		/// with no interaction with other entites.
-		virtual void		Update(TimeStep Time) = 0;
+		virtual void		Update(TimeStep Time);
+
+		/// Performs interactions with the frame with no interaction
+		/// to other entities.
+		virtual void		FrameInteract(Ptr<IFrame> Frame);
 	};
 
 	/// An entity for which a visual representation can be created.
-	class IVisualEntity : public IInterface {
+	class IVisualEntity : public Interface {
 	public:
 		DECLARE_INTERFACE_CLASS(IVisualEntity)
 

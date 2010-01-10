@@ -24,7 +24,7 @@ class ClockEntityVisual : public IVisual {
 public:
 	ClockEntityVisual(VisualParameters Params);
 
-	void	Update(IInterface* MainInterface);
+	void	Update(Interface* MainInterface);
 	void	Render();
 
 private:
@@ -34,7 +34,7 @@ private:
 };
 
 //--
-BEGIN_INTERFACE_CLASS
+BEGIN_INTERFACE_CLASS(ClockEntity)
 	INTERFACE_CLASS_NAME(ClockEntity)
 	BEGIN_INTERFACE_CLASS_BASES(ClockEntity)
 		INTERFACE_CLASS_BASE(IClockEntity)
@@ -45,15 +45,14 @@ BEGIN_INTERFACE_CLASS
 END_INTERFACE_CLASS(ClockEntity)
 
 //--
-ClockEntity::ClockEntity(IObject* Owner) :
+ClockEntity::ClockEntity(Ptr<IObject> Owner) :
 IClockEntity(Owner), 
 IVisualEntity(Owner), 
 IDynamicEntity(Owner), 
 IEntityInterface(Owner),
-IInterface(Owner)
+Interface(ClockEntity::Class, Owner)
 {
-	
-
+	this->_time = 0.0f;
 }
 
 //--
@@ -64,7 +63,7 @@ void ClockEntity::Update(TimeStep Time) {
 //--
 Ptr<Entity> ClockEntity::Clone() {
 	Ptr<Entity> e = new Entity();
-	ClockEntity* ce = new ClockEntity(e);
+	ClockEntity* ce = new ClockEntity(Ptr<IObject>(e));
 	ce->_time = this->_time;
 	e->Init(ce);
 	return e;
@@ -92,7 +91,7 @@ ClockEntityVisual::ClockEntityVisual(VisualParameters Params) {
 }
 
 //--
-void ClockEntityVisual::Update(IInterface* MainInterface) {
+void ClockEntityVisual::Update(Interface* MainInterface) {
 	this->_target = (ClockEntity*)MainInterface;
 }
 

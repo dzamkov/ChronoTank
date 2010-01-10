@@ -8,7 +8,7 @@ namespace ctank {
 
 	/// An individual player-controllable entity that affects
 	/// other units and entities.
-	class IUnit : public IInterface {
+	class IUnit : public Interface {
 	public:
 		DECLARE_INTERFACE_CLASS(IUnit)
 

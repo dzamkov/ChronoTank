@@ -46,6 +46,7 @@ void Reality::Init(TimeStep Origin, Ptr<Frame> WriteFrame) {
 	this->_source.MakeNull();
 	this->_end = Origin;
 	this->_writeframe = WriteFrame;
+	this->_writeframe->Init(Origin, this, true);
 	this->_frames.insert(Ptr<Frame>(this, WriteFrame));
 }
 
